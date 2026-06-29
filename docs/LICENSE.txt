@@ -1,0 +1,19 @@
+CHAINOPS DASHBOARD UI KIT — COMMERCIAL LICENSE
+
+Copyright (c) 2026 ChainOps UI Kit
+
+Permission is granted to the purchaser to:
+
+1. Use these design files and HTML/CSS templates in unlimited personal and commercial projects.
+2. Modify, remix, and adapt the assets for client work, SaaS products, and marketing sites.
+3. Publish products built using these templates without attribution (attribution appreciated).
+
+You may NOT:
+
+1. Resell, redistribute, or sublicense the original source files as a competing UI kit or template pack.
+2. Share the download link or source ZIP publicly.
+3. Claim original authorship of the unmodified template pack.
+
+This license is non-transferable and applies to the original purchaser only.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.

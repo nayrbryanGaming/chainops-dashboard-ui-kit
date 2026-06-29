@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChainOps Cover</title>
+  <link rel="stylesheet" href="../assets/css/chainops.css" />
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(34, 211, 238, 0.22), transparent 35%),
+        radial-gradient(circle at 85% 10%, rgba(167, 139, 250, 0.18), transparent 32%),
+        #070b14;
+    }
+    .cover {
+      width: min(1280px, 94vw);
+      aspect-ratio: 16 / 9;
+      border-radius: 28px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(13, 19, 32, 0.82);
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      inset: auto -10% -40% auto;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(34, 211, 238, 0.18), transparent 70%);
+      pointer-events: none;
+    }
+    .cover-copy h1 {
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      margin: 18px 0 16px;
+      max-width: 12ch;
+    }
+    .cover-copy p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 42ch;
+      margin: 0 0 24px;
+    }
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .mini-ui {
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      background: rgba(7, 11, 20, 0.72);
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      align-self: center;
+    }
+    .mini-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .mini-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(15, 23, 42, 0.72);
+    }
+    .mini-card strong {
+      display: block;
+      font-size: 1.1rem;
+      margin-top: 4px;
+    }
+    .mini-chart {
+      height: 120px;
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(34, 211, 238, 0.08), transparent 70%),
+        repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.06) 0 1px, transparent 1px 48px);
+      position: relative;
+      overflow: hidden;
+    }
+    .mini-chart::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 70px;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.08), rgba(34, 211, 238, 0.55), rgba(167, 139, 250, 0.45));
+      clip-path: polygon(0 75%, 15% 55%, 30% 62%, 45% 35%, 60% 42%, 75% 22%, 90% 30%, 100% 18%, 100% 100%, 0 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <div class="cover-copy">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>
+        </div>
+        <div class="brand-copy"><strong>ChainOps UI Kit</strong><span>Web3 + AI SaaS Dashboard System</span></div>
+      </div>
+      <h1>Ship investor-ready dashboards in hours.</h1>
+      <p>13 premium screens, design tokens, and a complete CSS system for founders building Web3 and AI products.</p>
+      <div class="pill-row">
+        <span class="badge info">13 Screens</span>
+        <span class="badge purple">Design Tokens</span>
+        <span class="badge success">Commercial License</span>
+        <span class="badge warning">HTML/CSS Ready</span>
+      </div>
+      <div style="display:flex; gap:12px; align-items:center;">
+        <span class="price" style="font-size:2rem;">$49</span>
+        <span style="color:var(--text-secondary);">Instant download • Gumroad ready</span>
+      </div>
+    </div>
+    <div class="mini-ui">
+      <div class="mini-top">
+        <strong>Network Overview</strong>
+        <span class="badge info">Live</span>
+      </div>
+      <div class="mini-stats">
+        <div class="mini-card"><span class="stat-label">Volume 24h</span><strong>$1.28M</strong></div>
+        <div class="mini-card"><span class="stat-label">AI Spend</span><strong>$3,420</strong></div>
+      </div>
+      <div class="mini-chart"></div>
+    </div>
+  </div>
+</body>
+</html>

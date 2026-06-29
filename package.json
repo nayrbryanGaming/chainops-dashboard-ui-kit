@@ -1,0 +1,12 @@
+{
+  "name": "chainops-dashboard-ui-kit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Premium Web3 + AI SaaS dashboard UI kit for Gumroad",
+  "scripts": {
+    "preview": "npx --yes serve preview -p 3456",
+    "cover": "npx --yes serve cover -p 3457",
+    "generate": "python tools/generate_previews.py",
+    "package": "powershell -ExecutionPolicy Bypass -File tools/package.ps1"
+  }
+}
