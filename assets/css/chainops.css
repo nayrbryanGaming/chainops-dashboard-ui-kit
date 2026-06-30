@@ -61,7 +61,7 @@ textarea {
   font: inherit;
 }
 
-.app-shell {
+.app-shell { min-height: 100vh;
   display: grid;
   grid-template-columns: var(--sidebar-width) 1fr;
   min-height: 100vh;
@@ -174,7 +174,7 @@ textarea {
   color: var(--text-secondary);
 }
 
-.main {
+.main { min-height: 100vh;
   padding: 28px 32px 40px;
 }
 
