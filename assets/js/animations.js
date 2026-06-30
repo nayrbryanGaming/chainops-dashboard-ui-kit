@@ -61,8 +61,6 @@
     if (sb) sb.classList.add('sidebar-anim-in');
     const tb = document.querySelector('.topbar');
     if (tb) tb.classList.add('topbar-anim-in');
-    const main = document.querySelector('.main');
-    if (main) main.classList.add('main-anim-in');
   }
 
   /* ──────────────────────────────────────────────

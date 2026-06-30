@@ -3,1751 +3,203 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChainOps UI Kit — Dashboard Design System for Web3 and AI Products</title>
-  <meta name="description" content="Production-ready HTML screens and a complete CSS design system for Web3 operations, crypto tooling, and AI SaaS dashboards. Ship your product interface today." />
-  <meta property="og:title" content="ChainOps UI Kit — Dashboard Design System for Web3 and AI Products" />
-  <meta property="og:description" content="Production-ready HTML screens and a complete CSS design system for Web3 operations, crypto tooling, and AI SaaS dashboards." />
-  <meta property="og:type" content="website" />
+  <title>ChainOps UI Kit - Dashboard Design System</title>
+  <meta name="description" content="Production HTML screens and CSS design system for Web3 and AI products." />
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="assets/css/chainops.css" />
   <link rel="stylesheet" href="assets/css/animations.css" />
   <style>
-    /* ============================================================
-       DESIGN TOKENS
-    ============================================================ */
-    :root {
-      --void:       #020408;
-      --base:       #060a12;
-      --raised:     #0c1220;
-      --panel:      rgba(10,17,33,0.8);
-      --panel-hov:  rgba(16,26,50,0.92);
-      --b-dim:      rgba(148,163,184,0.08);
-      --b-mid:      rgba(148,163,184,0.16);
-      --b-bright:   rgba(148,163,184,0.28);
-      --t1:  #edf2fc;
-      --t2:  #7a94b8;
-      --t3:  #3d5470;
-      --cyan:    #22d3ee;
-      --purple:  #a78bfa;
-      --emerald: #34d399;
-      --amber:   #fbbf24;
-      --rose:    #fb7185;
-      --brand:   linear-gradient(135deg, #22d3ee 0%, #818cf8 50%, #c084fc 100%);
-      --brand-a: linear-gradient(135deg, #22d3ee 0%, #a78bfa 100%);
-      --r-xs:  8px;
-      --r-sm:  12px;
-      --r-md:  18px;
-      --r-lg:  26px;
-      --r-xl:  36px;
-      --font:  'Space Grotesk', system-ui, sans-serif;
-      --mono:  'JetBrains Mono', ui-monospace, monospace;
-      --shadow: 0 8px 40px rgba(0,0,0,0.5);
-      --shadow-lg: 0 24px 80px rgba(0,0,0,0.6);
-      --glow-c: 0 0 50px rgba(34,211,238,0.15), 0 0 100px rgba(34,211,238,0.07);
-      --glow-p: 0 0 50px rgba(167,139,250,0.15), 0 0 100px rgba(167,139,250,0.07);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font);
-      background: var(--void);
-      color: var(--t1);
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
-    a { color: inherit; text-decoration: none; }
-
-    /* ============================================================
-       CANVAS BG
-    ============================================================ */
-    #bg-canvas {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    }
-    .grid-overlay {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image:
-        linear-gradient(rgba(148,163,184,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148,163,184,0.03) 1px, transparent 1px);
-      background-size: 72px 72px;
-      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black, transparent);
-      mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black, transparent);
-    }
-    .noise-overlay {
-      position: fixed; inset: 0; z-index: 1; pointer-events: none;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.022;
-    }
-    .cursor-trail {
-      position: fixed; pointer-events: none; z-index: 2;
-      width: 360px; height: 360px; border-radius: 50%;
-      background: radial-gradient(circle at center, rgba(34,211,238,0.055) 0%, transparent 65%);
-      transform: translate(-50%,-50%);
-      transition: left 0.06s ease, top 0.06s ease;
-    }
-    .page { position: relative; z-index: 3; }
-
-    /* ============================================================
-       NAV
-    ============================================================ */
-    .nav {
-      position: fixed; top: 0; inset-inline: 0; z-index: 200;
-      height: 64px; padding: 0 40px;
-      display: flex; align-items: center; justify-content: space-between; gap: 20px;
-      border-bottom: 1px solid transparent;
-      background: transparent;
-      transition: background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
-    }
-    .nav.scrolled {
-      background: rgba(2,4,8,0.88);
-      border-color: var(--b-dim);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-    }
-    .nav-logo {
-      display: flex; align-items: center; gap: 11px;
-      font-weight: 600; font-size: 0.98rem; letter-spacing: -0.02em;
-    }
-    .logo-mark {
-      width: 34px; height: 34px; border-radius: 9px;
-      background: var(--brand);
-      display: grid; place-items: center;
-      box-shadow: 0 4px 18px rgba(34,211,238,0.3);
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
-    }
-    .logo-mark:hover { box-shadow: var(--glow-c); transform: scale(1.05); }
-    .logo-mark svg { width: 18px; height: 18px; color: #041018; }
-    .nav-links {
-      display: flex; align-items: center; gap: 2px; list-style: none;
-    }
-    .nav-links a {
-      display: block; padding: 6px 13px; border-radius: var(--r-xs);
-      font-size: 0.875rem; color: var(--t2);
-      transition: color 0.15s ease, background 0.15s ease;
-    }
-    .nav-links a:hover { color: var(--t1); background: rgba(255,255,255,0.05); }
-    .nav-right { display: flex; align-items: center; gap: 10px; }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      gap: 7px; padding: 9px 18px; border-radius: var(--r-xs);
-      font-family: var(--font); font-size: 0.875rem; font-weight: 600;
-      letter-spacing: -0.01em; border: none; cursor: pointer;
-      text-decoration: none; white-space: nowrap;
-      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1),
-                  box-shadow 0.2s ease, opacity 0.2s ease;
-      position: relative; overflow: hidden;
-    }
-    .btn::after {
-      content: ''; position: absolute; inset: 0;
-      background: rgba(255,255,255,0.08);
-      opacity: 0; transition: opacity 0.15s ease;
-    }
-    .btn:hover::after { opacity: 1; }
-    .btn:hover { transform: translateY(-1px); }
-    .btn:active { transform: translateY(0) scale(0.97); }
-    .btn-ghost {
-      background: transparent; border: 1px solid var(--b-mid); color: var(--t2);
-    }
-    .btn-ghost:hover { color: var(--t1); border-color: var(--b-bright); }
-    .btn-brand {
-      background: var(--brand); color: #041018; font-weight: 700;
-      box-shadow: 0 6px 24px rgba(34,211,238,0.28);
-    }
-    .btn-brand:hover { box-shadow: 0 10px 36px rgba(34,211,238,0.42); }
-    .btn-lg { padding: 13px 26px; font-size: 0.95rem; border-radius: var(--r-sm); }
-    .btn-xl { padding: 16px 32px; font-size: 1rem; border-radius: var(--r-md); }
-
-    /* Ripple effect */
-    .btn-ripple span.ripple-el {
-      position: absolute; border-radius: 50%;
-      background: rgba(255,255,255,0.25);
-      transform: scale(0); animation: ripple 0.6s ease out;
-    }
-
-    /* ============================================================
-       HERO
-    ============================================================ */
+    /* Landing page specific layout */
     .hero {
-      min-height: 100vh; padding: 130px 24px 80px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      position: relative; overflow: hidden;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px;
+      position: relative;
+      overflow: hidden;
     }
-
-    /* Aurora bg blobs */
-    .hero-blob {
-      position: absolute; border-radius: 50%;
-      filter: blur(80px); pointer-events: none; z-index: 0;
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at center, rgba(34, 211, 238, 0.08) 0%, transparent 50%);
+      z-index: -1;
+      animation: spin 60s linear infinite;
     }
-    .blob-1 {
-      width: 700px; height: 500px;
-      background: radial-gradient(ellipse, rgba(34,211,238,0.12), transparent 70%);
-      top: -200px; left: 50%; transform: translateX(-50%);
-      animation: breathe 8s ease-in-out infinite;
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    
+    .hero h1 {
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: 1.1;
+      margin-bottom: 24px;
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      max-width: 900px;
     }
-    .blob-2 {
-      width: 500px; height: 500px;
-      background: radial-gradient(ellipse, rgba(167,139,250,0.10), transparent 70%);
-      top: 20%; left: -10%;
-      animation: floatDiag 10s ease-in-out infinite;
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
     }
-    .blob-3 {
-      width: 450px; height: 450px;
-      background: radial-gradient(ellipse, rgba(34,211,238,0.08), transparent 70%);
-      top: 15%; right: -8%;
-      animation: float 12s ease-in-out infinite;
-    }
-
-    /* Hero content */
-    .hero-inner { position: relative; z-index: 2; max-width: 900px; width: 100%; }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 5px 14px 5px 6px; border-radius: 999px;
-      border: 1px solid rgba(34,211,238,0.22);
-      background: rgba(34,211,238,0.06);
-      margin-bottom: 28px;
-      animation: fadeDown 0.6s ease both 0.1s;
-    }
-    .hero-badge-dot {
-      width: 20px; height: 20px; border-radius: 50%;
-      background: rgba(34,211,238,0.15);
-      display: grid; place-items: center;
-    }
-    .hero-badge-dot::after {
-      content: ''; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--cyan); display: block;
-      animation: pulseSoft 1.8s ease-in-out infinite;
-    }
-    .hero-badge-text {
-      font-size: 0.76rem; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--cyan);
-    }
-
-    .hero-title {
-      font-size: clamp(2.8rem, 8vw, 6.8rem);
-      font-weight: 700; line-height: 1.0; letter-spacing: -0.045em;
-      margin-bottom: 26px;
-      animation: fadeUp 0.7s ease both 0.25s;
-    }
-    .word-reveal-wrap { overflow: hidden; display: inline-block; }
-    .word-reveal { display: inline-block; animation: wordSlide 0.65s ease both; }
-    .title-grad {
-      background: var(--brand);
-      background-size: 200% 200%;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradientShift 5s ease infinite;
-    }
-
-    .hero-sub {
-      font-size: clamp(1rem, 2.2vw, 1.22rem);
-      color: var(--t2); max-width: 58ch;
-      margin: 0 auto 44px; line-height: 1.72; font-weight: 400;
-      animation: fadeUp 0.7s ease both 0.4s;
-    }
-
     .hero-actions {
-      display: flex; align-items: center; justify-content: center;
-      gap: 12px; flex-wrap: wrap; margin-bottom: 64px;
-      animation: fadeUp 0.7s ease both 0.55s;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
     }
-
-    /* Social proof strip */
-    .hero-social-proof {
-      display: flex; align-items: center; justify-content: center;
-      gap: 32px; flex-wrap: wrap;
-      padding-top: 24px;
-      border-top: 1px solid var(--b-dim);
-      animation: fadeUp 0.7s ease both 0.7s;
-    }
-    .sp-stat { text-align: center; }
-    .sp-value {
-      font-size: 2rem; font-weight: 700; letter-spacing: -0.045em;
-      background: var(--brand);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text; display: block;
-    }
-    .sp-label {
-      font-size: 0.72rem; color: var(--t3);
-      text-transform: uppercase; letter-spacing: 0.1em;
-      display: block; margin-top: 2px;
-    }
-    .sp-divider {
-      width: 1px; height: 40px;
-      background: linear-gradient(to bottom, transparent, var(--b-mid), transparent);
-    }
-
-    /* ============================================================
-       DASHBOARD PREVIEW
-    ============================================================ */
-    .preview-section {
-      position: relative; z-index: 4;
-      padding: 0 40px 100px;
-    }
-    .preview-wrap {
-      max-width: 1140px; margin: 0 auto;
-      position: relative;
-      animation: fadeUp 0.8s ease both 0.9s;
-    }
-    .preview-glow {
-      position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
-      width: 800px; height: 300px; pointer-events: none;
-      background: radial-gradient(ellipse at center, rgba(34,211,238,0.1) 0%, rgba(129,140,248,0.07) 50%, transparent 70%);
-    }
-
-    /* Floating info cards */
-    .float-card {
-      position: absolute; z-index: 10;
-      background: rgba(10,16,30,0.92);
-      border: 1px solid var(--b-mid);
-      border-radius: var(--r-md);
-      padding: 14px 18px;
-      backdrop-filter: blur(20px);
-      box-shadow: var(--shadow);
-      min-width: 170px;
-    }
-    .float-card.fc-l {
-      left: -32px; top: 30%;
-      animation: float 6s ease-in-out infinite;
-    }
-    .float-card.fc-r {
-      right: -32px; top: 18%;
-      animation: float 7s ease-in-out infinite 1s;
-    }
-    .float-card.fc-b {
-      bottom: -20px; left: 50%; transform: translateX(-50%);
-      animation: bob 5s ease-in-out infinite;
-      min-width: 240px;
-    }
-    .fc-label { font-size: 0.68rem; color: var(--t3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
-    .fc-value { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.03em; }
-    .fc-delta { font-size: 0.72rem; color: var(--emerald); margin-top: 2px; }
-    .fc-live { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--t2); margin-top: 6px; }
-
-    /* Browser frame */
-    .browser-frame {
-      border-radius: var(--r-lg);
-      border: 1px solid var(--b-mid);
-      background: var(--raised);
-      box-shadow: var(--shadow-lg), var(--glow-c);
-      overflow: hidden;
-      transform: perspective(1400px) rotateX(5deg);
-      transform-origin: top center;
-      transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
-    }
-    .browser-frame:hover,
-    .browser-frame.flat { transform: perspective(1400px) rotateX(0deg); }
-    .browser-chrome {
-      height: 40px; background: rgba(6,10,18,0.98);
-      border-bottom: 1px solid var(--b-dim);
-      display: flex; align-items: center; padding: 0 16px; gap: 10px;
-    }
-    .chrome-dots { display: flex; gap: 6px; }
-    .chrome-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .chrome-dot.r { background: #ff5f57; }
-    .chrome-dot.y { background: #febc2e; }
-    .chrome-dot.g { background: #28c840; }
-    .chrome-url {
-      flex: 1; height: 22px; margin: 0 14px;
-      background: rgba(255,255,255,0.04); border: 1px solid var(--b-dim);
-      border-radius: 6px; display: flex; align-items: center;
-      padding: 0 10px; font-family: var(--mono); font-size: 0.7rem; color: var(--t3);
-      gap: 6px;
-    }
-    .chrome-url-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--emerald); animation: pulseSoft 2s ease-in-out infinite; }
-
-    /* Dashboard mockup inside frame */
-    .dash-inner {
-      height: 520px; display: grid;
-      grid-template-columns: 200px 1fr;
-      overflow: hidden;
-    }
-    .dash-sidebar {
-      background: rgba(4,8,14,0.95);
-      border-right: 1px solid var(--b-dim);
-      padding: 18px 12px; display: flex; flex-direction: column; gap: 16px;
-    }
-    .ds-brand { height: 30px; border-radius: 8px; background: var(--brand); opacity: 0.9; }
-    .ds-section { font-size: 0.6rem; letter-spacing: 0.12em; color: var(--t3); text-transform: uppercase; padding: 0 6px; }
-    .ds-nav { display: flex; flex-direction: column; gap: 4px; }
-    .ds-item {
-      height: 26px; border-radius: 7px;
-      background: rgba(255,255,255,0.04);
-      animation: shimmerCard 3s ease infinite;
-    }
-    .ds-item.act {
-      background: linear-gradient(135deg, rgba(34,211,238,0.14), rgba(167,139,250,0.10));
-      border: 1px solid rgba(34,211,238,0.18);
-      animation: none;
-    }
-
-    .dash-main { padding: 18px; overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
-
-    /* Stat row */
-    .dm-stats {
-      display: grid; grid-template-columns: repeat(4,1fr); gap: 10px;
-    }
-    .dm-stat {
-      background: var(--panel); border: 1px solid var(--b-dim);
-      border-radius: var(--r-xs); padding: 12px;
-      animation: fadeUp 0.4s ease both;
-    }
-    .dm-stat:nth-child(1) { animation-delay: 1.0s; }
-    .dm-stat:nth-child(2) { animation-delay: 1.1s; }
-    .dm-stat:nth-child(3) { animation-delay: 1.2s; }
-    .dm-stat:nth-child(4) { animation-delay: 1.3s; }
-    .dms-lbl { height: 6px; width: 55%; background: rgba(255,255,255,0.07); border-radius: 3px; margin-bottom: 8px; }
-    .dms-val {
-      height: 18px; width: 75%; border-radius: 4px;
-      background: linear-gradient(90deg, var(--cyan), var(--purple));
-      opacity: 0.75;
-    }
-    .dms-delta { height: 5px; width: 38%; background: rgba(52,211,153,0.4); border-radius: 3px; margin-top: 7px; }
-
-    /* Charts row */
-    .dm-charts { display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; }
-    .dm-chart {
-      background: var(--panel); border: 1px solid var(--b-dim);
-      border-radius: var(--r-xs); padding: 12px; height: 170px; position: relative; overflow: hidden;
-    }
-    .dmc-hdr { height: 6px; width: 28%; background: rgba(255,255,255,0.07); border-radius: 3px; margin-bottom: 8px; }
-    .chart-svg-wrap { position: absolute; bottom: 12px; left: 12px; right: 12px; }
-
-    /* Table rows */
-    .dm-table { background: var(--panel); border: 1px solid var(--b-dim); border-radius: var(--r-xs); padding: 10px; }
-    .dmt-row {
-      display: flex; align-items: center; gap: 8px;
-      padding: 6px 0; border-bottom: 1px solid var(--b-dim);
-    }
-    .dmt-row:last-child { border-bottom: none; }
-    .dmt-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .dmt-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.07); flex: 1; }
-    .dmt-badge { width: 48px; height: 16px; border-radius: 999px; opacity: 0.55; flex-shrink: 0; }
-
-    /* ============================================================
-       MARQUEE STRIP
-    ============================================================ */
-    .strip {
-      padding: 0; border-top: 1px solid var(--b-dim); border-bottom: 1px solid var(--b-dim);
-      background: rgba(2,4,8,0.6); overflow: hidden;
-    }
-    .strip-track {
-      display: flex; animation: marquee 26s linear infinite; width: max-content;
-    }
-    .strip-track:hover { animation-play-state: paused; }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    .strip-item {
-      display: flex; align-items: center; gap: 9px;
-      padding: 13px 30px; border-right: 1px solid var(--b-dim);
-      font-size: 0.8rem; font-weight: 500; color: var(--t3);
-      white-space: nowrap; transition: color 0.2s ease;
-    }
-    .strip-item:hover { color: var(--t2); }
-    .strip-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-
-    /* ============================================================
-       SHARED SECTION LAYOUT
-    ============================================================ */
-    section { padding: 96px 24px; }
-    .container { max-width: 1140px; margin: 0 auto; }
-    .section-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 4px 12px; border-radius: 999px;
-      border: 1px solid var(--b-mid); background: rgba(255,255,255,0.03);
-      color: var(--t3); font-size: 0.7rem; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 18px;
-    }
-    .section-title {
-      font-size: clamp(1.9rem, 4vw, 3.2rem);
-      font-weight: 700; letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 16px;
-    }
-    .section-sub {
-      font-size: 1rem; color: var(--t2); line-height: 1.72; max-width: 54ch;
-    }
-    .text-g {
-      background: var(--brand);
-      background-size: 200% 200%;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradientShift 5s ease infinite;
-    }
-    .divider-line {
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--b-mid) 40%, var(--b-mid) 60%, transparent 100%);
-    }
-
-    /* ============================================================
-       BENTO GRID — SCREENS SECTION
-    ============================================================ */
-    .screens-section {}
-    .screens-header { text-align: center; margin-bottom: 56px; }
-    .screens-header .section-sub { margin: 0 auto; }
-
-    .bento-grid {
+    
+    .feature-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 280px;
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px;
     }
-    .bento-item {
-      border: 1px solid var(--b-dim);
-      border-radius: var(--r-md);
-      background: var(--panel);
-      overflow: hidden; position: relative;
-      cursor: pointer;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
-                  border-color 0.3s ease, box-shadow 0.3s ease;
+    
+    .pricing-section {
+      padding: 80px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    header.nav-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 70px;
+      background: rgba(6, 10, 18, 0.8);
       backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-dim);
     }
-    .bento-item::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(34,211,238,0.07) 0%, transparent 55%);
-      opacity: 0; transition: opacity 0.4s ease; z-index: 0;
-    }
-    .bento-item:hover { transform: translateY(-5px) scale(1.01); border-color: rgba(34,211,238,0.25); box-shadow: var(--shadow), 0 0 50px rgba(34,211,238,0.06); }
-    .bento-item:hover::before { opacity: 1; }
-    .bento-item.wide { grid-column: span 2; }
-    .bento-item.tall { grid-row: span 2; }
-
-    .bento-preview {
-      height: 55%; overflow: hidden; position: relative;
-    }
-    .bento-preview::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, transparent 30%, var(--raised) 100%);
-    }
-    .bento-body {
-      position: relative; z-index: 2; padding: 16px 20px;
-    }
-    .bento-tag {
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--cyan); margin-bottom: 5px;
-    }
-    .bento-title {
-      font-size: 0.98rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px;
-    }
-    .bento-desc { font-size: 0.82rem; color: var(--t2); line-height: 1.5; }
-    .bento-arrow {
-      position: absolute; bottom: 16px; right: 18px; z-index: 2;
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 1px solid var(--b-mid);
-      display: grid; place-items: center; color: var(--t3);
-      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-    }
-    .bento-item:hover .bento-arrow {
-      background: var(--cyan); color: #04101a; border-color: var(--cyan);
-      transform: translate(2px,-2px) rotate(45deg);
-    }
-    .bento-arrow svg { width: 12px; height: 12px; }
-
-    /* Mini-UI previews inside bento */
-    .bento-ui {
-      width: 100%; height: 100%; background: var(--base);
-      padding: 10px; display: flex; flex-direction: column; gap: 7px;
-      transform: scale(1.02);
-    }
-    .bui-hdr { display: flex; gap: 5px; align-items: center; padding-bottom: 7px; border-bottom: 1px solid var(--b-dim); }
-    .bui-dot { width: 5px; height: 5px; border-radius: 50%; }
-    .bui-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.07); }
-    .bui-row { display: flex; gap: 7px; }
-    .bui-card { flex: 1; height: 28px; border-radius: 6px; border: 1px solid var(--b-dim); background: rgba(255,255,255,0.025); }
-    .bui-trow { height: 7px; border-radius: 4px; background: rgba(255,255,255,0.055); }
-    .bui-chart { height: 50px; position: relative; overflow: hidden; }
-    .bui-chart::after {
-      content: ''; position: absolute; inset: auto 0 0 0; height: 40px;
-      background: linear-gradient(90deg, rgba(34,211,238,0.05), rgba(34,211,238,0.45), rgba(167,139,250,0.35));
-      clip-path: polygon(0 60%, 15% 45%, 30% 55%, 45% 28%, 60% 40%, 75% 16%, 88% 22%, 100% 10%, 100% 100%, 0 100%);
-    }
-
-    /* ============================================================
-       FEATURES — 3D TILT CARDS
-    ============================================================ */
-    .features-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 14px; margin-top: 56px;
-    }
-    .feat-card {
-      border: 1px solid var(--b-dim); border-radius: var(--r-md);
-      background: var(--panel); padding: 26px;
-      position: relative; overflow: hidden;
-      backdrop-filter: blur(12px);
-      transition: transform 0.15s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      transform-style: preserve-3d;
-    }
-    .feat-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at var(--fx,50%) var(--fy,50%), rgba(34,211,238,0.09) 0%, transparent 55%);
-      opacity: 0; transition: opacity 0.3s ease;
-    }
-    .feat-card:hover::before { opacity: 1; }
-    .feat-card:hover { border-color: rgba(34,211,238,0.22); box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
-    .feat-card.wide { grid-column: span 2; }
-    .feat-icon {
-      width: 44px; height: 44px; border-radius: 11px;
-      display: grid; place-items: center; margin-bottom: 18px;
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
-    }
-    .feat-card:hover .feat-icon { transform: scale(1.08); }
-    .feat-icon svg { width: 20px; height: 20px; }
-    .fi-c  { background: rgba(34,211,238,0.12);  color: var(--cyan);    box-shadow: 0 4px 16px rgba(34,211,238,0.14); }
-    .fi-p  { background: rgba(167,139,250,0.12); color: var(--purple);  box-shadow: 0 4px 16px rgba(167,139,250,0.14); }
-    .fi-e  { background: rgba(52,211,153,0.12);  color: var(--emerald); box-shadow: 0 4px 16px rgba(52,211,153,0.14); }
-    .fi-a  { background: rgba(251,191,36,0.12);  color: var(--amber);   box-shadow: 0 4px 16px rgba(251,191,36,0.14); }
-    .fi-r  { background: rgba(251,113,133,0.12); color: var(--rose);    box-shadow: 0 4px 16px rgba(251,113,133,0.14); }
-    .feat-title { font-size: 1rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 9px; }
-    .feat-desc  { font-size: 0.86rem; color: var(--t2); line-height: 1.65; }
-
-    /* ============================================================
-       CODE BLOCK + TOKENS
-    ============================================================ */
-    .tokens-layout {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
-      align-items: center; margin-top: 56px;
-    }
-    .code-frame {
-      border: 1px solid var(--b-mid); border-radius: var(--r-md);
-      background: rgba(2,4,8,0.95); overflow: hidden;
-    }
-    .code-chrome {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 16px; border-bottom: 1px solid var(--b-dim);
-    }
-    .cc-dots { display: flex; gap: 6px; }
-    .cc-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .code-filename { font-family: var(--mono); font-size: 0.72rem; color: var(--t3); margin-left: 6px; }
-    .code-body {
-      padding: 20px 18px; font-family: var(--mono);
-      font-size: 0.78rem; line-height: 1.85; overflow-x: auto;
-    }
-    .ck-c { color: #3d5470; }
-    .ck-v { color: #a78bfa; }
-    .ck-k { color: #22d3ee; }
-    .ck-s { color: #fbbf24; }
-    .ck-h { color: #34d399; }
-    .ck-b { color: #edf2fc; }
-
-    .swatches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
-    .swatch {
-      width: 44px; height: 44px; border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.08);
-      cursor: pointer; position: relative;
-      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
-    }
-    .swatch:hover { transform: scale(1.2) translateY(-3px); }
-    .swatch:hover::after {
-      content: attr(title);
-      position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
-      font-family: var(--mono); font-size: 0.6rem; color: var(--t3);
-      white-space: nowrap; pointer-events: none;
-    }
-
-    .token-points { display: flex; flex-direction: column; gap: 26px; }
-    .tp { display: flex; gap: 16px; align-items: flex-start; }
-    .tp-icon { width: 38px; height: 38px; border-radius: 9px; display: grid; place-items: center; flex-shrink: 0; }
-    .tp-icon svg { width: 17px; height: 17px; }
-    .tp-title { font-size: 0.93rem; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.01em; }
-    .tp-desc  { font-size: 0.83rem; color: var(--t2); line-height: 1.6; }
-
-    /* ============================================================
-       INSIDE WHAT'S INCLUDED
-    ============================================================ */
-    .inside-grid {
-      display: grid; grid-template-columns: repeat(2,1fr);
-      gap: 12px; margin-top: 48px;
-    }
-    .inside-row {
-      display: flex; gap: 15px; align-items: flex-start;
-      padding: 20px; border: 1px solid var(--b-dim);
-      border-radius: var(--r-md); background: var(--panel);
-      backdrop-filter: blur(10px);
-      transition: border-color 0.2s ease, transform 0.2s ease;
-    }
-    .inside-row:hover { border-color: var(--b-mid); transform: translateX(3px); }
-    .ir-icon {
-      width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
-      background: rgba(34,211,238,0.10); color: var(--cyan);
-      display: grid; place-items: center;
-    }
-    .ir-icon svg { width: 15px; height: 15px; }
-    .ir-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 3px; }
-    .ir-desc  { font-size: 0.8rem; color: var(--t2); line-height: 1.55; }
-
-    /* ============================================================
-       PRICING
-    ============================================================ */
-    .pricing-header { text-align: center; margin-bottom: 56px; }
-    .pricing-header .section-sub { margin: 0 auto; }
-    .pricing-cols { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-    .pricing-card {
-      border: 1px solid var(--b-dim); border-radius: var(--r-lg);
-      background: var(--panel); padding: 30px;
-      backdrop-filter: blur(12px);
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
-    }
-    .pricing-card:hover { transform: translateY(-6px); }
-    .pricing-card.best {
-      border-color: rgba(34,211,238,0.32);
-      background: linear-gradient(175deg, rgba(34,211,238,0.07) 0%, rgba(10,17,33,0.9) 60%);
-      box-shadow: 0 0 60px rgba(34,211,238,0.1), var(--shadow);
-      position: relative;
-    }
-    .pricing-card.best::before {
-      content: 'Most Popular'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-      background: var(--brand); color: #04101a; font-size: 0.7rem; font-weight: 700;
-      letter-spacing: 0.05em; padding: 3px 14px; border-radius: 999px; white-space: nowrap;
-    }
-    .pc-tier { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--t3); margin-bottom: 14px; }
-    .pc-price { font-size: 3rem; font-weight: 700; letter-spacing: -0.05em; line-height: 1; margin-bottom: 6px; }
-    .pc-price sup { font-size: 1.2rem; font-weight: 600; vertical-align: super; }
-    .pc-desc { font-size: 0.85rem; color: var(--t2); line-height: 1.6; margin-bottom: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--b-dim); }
-    .pc-features { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 26px; }
-    .pc-features li { display: flex; gap: 9px; font-size: 0.86rem; color: var(--t2); line-height: 1.5; align-items: flex-start; }
-    .pc-check { width: 15px; height: 15px; border-radius: 50%; background: rgba(52,211,153,0.15); color: var(--emerald); display: grid; place-items: center; flex-shrink: 0; margin-top: 1px; }
-    .pc-check svg { width: 8px; height: 8px; }
-
-    /* ============================================================
-       FAQ
-    ============================================================ */
-    .faq-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; margin-top: 56px; align-items: start; }
-    .faq-stack { display: flex; flex-direction: column; gap: 4px; }
-    .faq-row { border: 1px solid var(--b-dim); border-radius: var(--r-sm); overflow: hidden; transition: border-color 0.2s ease; }
-    .faq-row.open { border-color: var(--b-mid); }
-    .faq-trigger {
-      width: 100%; background: none; border: none;
-      padding: 16px 18px; text-align: left;
-      font-family: var(--font); font-size: 0.92rem; font-weight: 500; color: var(--t1);
-      cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 14px;
-      transition: background 0.15s ease;
-    }
-    .faq-trigger:hover { background: rgba(255,255,255,0.025); }
-    .faq-icon-wrap {
-      width: 20px; height: 20px; border-radius: 50%;
-      border: 1px solid var(--b-mid); color: var(--t3);
-      display: grid; place-items: center; flex-shrink: 0;
-      transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease;
-    }
-    .faq-icon-wrap svg { width: 10px; height: 10px; }
-    .faq-row.open .faq-icon-wrap { transform: rotate(180deg); border-color: var(--cyan); color: var(--cyan); }
-    .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1); }
-    .faq-row.open .faq-body { max-height: 300px; }
-    .faq-body-inner { padding: 0 18px 16px; font-size: 0.86rem; color: var(--t2); line-height: 1.72; }
-
-    /* ============================================================
-       CTA SECTION
-    ============================================================ */
-    .cta-section { text-align: center; padding: 120px 24px; position: relative; overflow: hidden; }
-    .cta-bg {
-      position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(34,211,238,0.07) 0%, rgba(167,139,250,0.05) 40%, transparent 70%);
-    }
-    .cta-title { font-size: clamp(2rem, 5vw, 4.2rem); font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; max-width: 14ch; margin: 0 auto 18px; }
-    .cta-sub   { font-size: 1rem; color: var(--t2); max-width: 50ch; margin: 0 auto 38px; line-height: 1.72; }
-    .cta-note  { margin-top: 16px; font-size: 0.76rem; color: var(--t3); }
-    .cta-actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
-
-    /* ============================================================
-       FOOTER
-    ============================================================ */
-    .footer {
-      border-top: 1px solid var(--b-dim); padding: 40px;
-      display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
-    }
-    .footer-brand { display: flex; align-items: center; gap: 10px; }
-    .footer-logo { width: 28px; height: 28px; border-radius: 7px; background: var(--brand); display: grid; place-items: center; }
-    .footer-logo svg { width: 14px; height: 14px; color: #04101a; }
-    .footer-name { font-size: 0.88rem; font-weight: 600; }
-    .footer-copy { font-size: 0.76rem; color: var(--t3); }
-    .footer-links { display: flex; gap: 22px; list-style: none; }
-    .footer-links a { font-size: 0.8rem; color: var(--t3); transition: color 0.15s ease; }
-    .footer-links a:hover { color: var(--t1); }
-
-    /* ============================================================
-       RESPONSIVE
-    ============================================================ */
-    @media (max-width: 1020px) {
-      .nav-links { display: none; }
-      .features-grid { grid-template-columns: 1fr 1fr; }
-      .feat-card.wide { grid-column: span 1; }
-      .tokens-layout { grid-template-columns: 1fr; gap: 40px; }
-      .inside-grid { grid-template-columns: 1fr; }
-      .pricing-cols { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
-      .faq-layout { grid-template-columns: 1fr; gap: 36px; }
-      .float-card { display: none; }
-      .bento-grid { grid-template-columns: 1fr 1fr; }
-      .bento-item.wide { grid-column: span 1; }
-    }
-    @media (max-width: 660px) {
-      .nav { padding: 0 20px; }
-      section { padding: 72px 20px; }
-      .hero { padding: 110px 20px 56px; }
-      .bento-grid { grid-template-columns: 1fr; }
-      .features-grid { grid-template-columns: 1fr; }
-      .preview-section { padding: 0 16px 80px; }
-      .footer { flex-direction: column; align-items: flex-start; gap: 16px; }
-    }
+    .nav-header .brand { display: flex; align-items: center; gap: 12px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text-primary); }
   </style>
 </head>
 <body>
 
-  <canvas id="bg-canvas"></canvas>
-  <div class="grid-overlay"></div>
-  <div class="noise-overlay"></div>
-  <div class="cursor-trail" id="cursor-trail"></div>
-
-  <div class="page">
-
-    <!-- NAV -->
-    <nav class="nav" id="main-nav" role="navigation" aria-label="Main navigation">
-      <a class="nav-logo" href="/" aria-label="ChainOps UI Kit home">
-        <div class="logo-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-            <rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/>
-            <rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/>
-          </svg>
-        </div>
-        ChainOps UI Kit
-      </a>
-      <ul class="nav-links" role="list">
-        <li><a href="#screens">Screens</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#inside">Contents</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#faq">FAQ</a></li>
-      </ul>
-      <div class="nav-right">
-        <a href="preview/index.html" class="btn btn-ghost">Browse Screens</a>
-        <a href="#pricing" class="btn btn-brand">Get the Kit</a>
+  <header class="nav-header">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" width="24" height="24">
+          <rect x="3" y="3" width="8" height="8" rx="2"/>
+          <rect x="13" y="3" width="8" height="5" rx="2"/>
+          <rect x="13" y="10" width="8" height="11" rx="2"/>
+          <rect x="3" y="13" width="8" height="8" rx="2"/>
+        </svg>
       </div>
+      <strong style="color:white;font-size:1.1rem;">ChainOps</strong>
+    </div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="preview/dashboard-overview.html">Preview</a>
+      <a href="#pricing">Pricing</a>
     </nav>
+  </header>
 
-    <!-- HERO -->
-    <section class="hero" aria-label="Product introduction">
-      <div class="hero-blob blob-1"></div>
-      <div class="hero-blob blob-2"></div>
-      <div class="hero-blob blob-3"></div>
-      <div class="hero-inner">
-        <div class="hero-badge">
-          <div class="hero-badge-dot"></div>
-          <span class="hero-badge-text">Web3 + AI SaaS — Design Kit v1.0</span>
-        </div>
-
-        <h1 class="hero-title">
-          <span class="word-reveal-wrap"><span class="word-reveal anim-d-200">Ship</span></span>
-          <span class="word-reveal-wrap"><span class="word-reveal anim-d-300"> your</span></span>
-          <span class="word-reveal-wrap"><span class="word-reveal anim-d-400"> </span></span>
-          <br>
-          <span class="title-grad">
-            <span class="word-reveal-wrap"><span class="word-reveal anim-d-500">dashboard</span></span>
-          </span>
-          <br>
-          <span class="word-reveal-wrap"><span class="word-reveal anim-d-600"> this week</span></span>
-        </h1>
-
-        <p class="hero-sub">
-          Thirteen production-grade HTML screens with a shared CSS design system. Built for crypto operations, AI tooling, and SaaS products. Drop straight into React, Next.js, or plain HTML.
-        </p>
-
-        <div class="hero-actions">
-          <a href="preview/index.html" class="btn btn-brand btn-xl btn-ripple" id="btn-preview">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Browse All Screens
-          </a>
-          <a href="#pricing" class="btn btn-ghost btn-xl">
-            Buy the Kit
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
-        </div>
-
-        <div class="hero-social-proof">
-          <div class="sp-stat"><span class="sp-value" data-target="13">0</span><span class="sp-label">HTML Screens</span></div>
-          <div class="sp-divider"></div>
-          <div class="sp-stat"><span class="sp-value" data-target="682">0</span><span class="sp-label">Lines CSS</span></div>
-          <div class="sp-divider"></div>
-          <div class="sp-stat"><span class="sp-value" data-target="160">0</span><span class="sp-label">Animations</span></div>
-          <div class="sp-divider"></div>
-          <div class="sp-stat"><span class="sp-value">100%</span><span class="sp-label">Commercial License</span></div>
-        </div>
+  <main>
+    <section class="hero">
+      <div class="badge info" style="margin-bottom: 24px;">v1.0 is live</div>
+      <h1 class="anim-fade-up">Ship your dashboard this week.</h1>
+      <p class="anim-fade-up" style="animation-delay: 100ms;">
+        Production HTML screens with a shared CSS system. Built for Web3 panels and AI tools. Drop straight into React, Vue, or plain HTML.
+      </p>
+      <div class="hero-actions anim-fade-up" style="animation-delay: 200ms;">
+        <a href="preview/dashboard-overview.html" class="btn btn-primary" style="padding: 14px 28px; font-size: 1.1rem;">Browse 13 Screens</a>
+        <a href="#pricing" class="btn btn-secondary" style="padding: 14px 28px; font-size: 1.1rem;">Get the Kit</a>
       </div>
     </section>
 
-    <!-- DASHBOARD PREVIEW -->
-    <div class="preview-section">
-      <div class="preview-wrap">
-        <div class="preview-glow"></div>
+    <section id="features" class="feature-grid">
+      <article class="card hover-tilt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="color:var(--accent-cyan); margin-bottom:16px;">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        <h3>Ready from day one</h3>
+        <p style="color:var(--text-secondary); margin-top:8px;">Every screen is completely built. Copy the HTML sections into whatever framework you use. The shared stylesheet handles everything else.</p>
+      </article>
+      
+      <article class="card hover-tilt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="color:var(--accent-purple); margin-bottom:16px;">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <h3>CSS Design System</h3>
+        <p style="color:var(--text-secondary); margin-top:8px;">One stylesheet drives colors, spacing, and layout. Change the root variables and the entire product updates. No hunting for inline styles.</p>
+      </article>
 
-        <div class="float-card fc-l reveal">
-          <div class="fc-label">24h Volume</div>
-          <div class="fc-value" style="color:var(--cyan)">$2.47M</div>
-          <div class="fc-delta">+18.4% from yesterday</div>
-        </div>
-        <div class="float-card fc-r reveal">
-          <div class="fc-label">Active Wallets</div>
-          <div class="fc-value" style="color:var(--purple)">8,942</div>
-          <div class="fc-delta">+4.1% this week</div>
-        </div>
-        <div class="float-card fc-b">
-          <div class="fc-live">
-            <div class="dot-live-ring"><div class="dot-live"></div></div>
-            Live — updating every 30 seconds
-          </div>
-        </div>
+      <article class="card hover-tilt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="color:var(--accent-emerald); margin-bottom:16px;">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        <h3>No Build Config</h3>
+        <p style="color:var(--text-secondary); margin-top:8px;">Plain HTML and CSS. You do not need a bundler or node modules to open these files. Double click the file, open in browser, and it works.</p>
+      </article>
+    </section>
 
-        <div class="browser-frame" id="browser-frame">
-          <div class="browser-chrome">
-            <div class="chrome-dots">
-              <div class="chrome-dot r"></div>
-              <div class="chrome-dot y"></div>
-              <div class="chrome-dot g"></div>
-            </div>
-            <div class="chrome-url">
-              <div class="chrome-url-dot"></div>
-              chainops.app/dashboard
-            </div>
-          </div>
-          <div class="dash-inner">
-            <div class="dash-sidebar">
-              <div class="ds-brand"></div>
-              <div class="ds-section">Navigation</div>
-              <div class="ds-nav">
-                <div class="ds-item act"></div>
-                <div class="ds-item"></div>
-                <div class="ds-item"></div>
-              </div>
-              <div class="ds-section">AI Ops</div>
-              <div class="ds-nav">
-                <div class="ds-item"></div>
-                <div class="ds-item"></div>
-              </div>
-              <div class="ds-section">Settings</div>
-              <div class="ds-nav">
-                <div class="ds-item"></div>
-                <div class="ds-item"></div>
-                <div class="ds-item"></div>
-              </div>
-            </div>
-            <div class="dash-main">
-              <div class="dm-stats">
-                <div class="dm-stat"><div class="dms-lbl"></div><div class="dms-val"></div><div class="dms-delta"></div></div>
-                <div class="dm-stat"><div class="dms-lbl"></div><div class="dms-val" style="background:linear-gradient(90deg,var(--purple),var(--rose));"></div><div class="dms-delta" style="background:rgba(251,113,133,0.3)"></div></div>
-                <div class="dm-stat"><div class="dms-lbl"></div><div class="dms-val" style="background:linear-gradient(90deg,var(--emerald),var(--cyan));"></div><div class="dms-delta"></div></div>
-                <div class="dm-stat"><div class="dms-lbl"></div><div class="dms-val" style="background:linear-gradient(90deg,var(--amber),var(--rose));"></div><div class="dms-delta" style="background:rgba(251,191,36,0.3)"></div></div>
-              </div>
-              <div class="dm-charts">
-                <div class="dm-chart">
-                  <div class="dmc-hdr"></div>
-                  <div class="chart-svg-wrap">
-                    <svg viewBox="0 0 320 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <defs>
-                        <linearGradient id="cg-a" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.3"/>
-                          <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
-                        </linearGradient>
-                      </defs>
-                      <path class="chart-fill-fade" d="M0,90 L40,72 L80,78 L120,50 L160,62 L200,34 L240,45 L280,20 L320,28 L320,110 L0,110 Z" fill="url(#cg-a)"/>
-                      <path class="chart-line-draw anim-dur-2000 anim-d-1200 anim-both" d="M0,90 L40,72 L80,78 L120,50 L160,62 L200,34 L240,45 L280,20 L320,28" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                </div>
-                <div class="dm-chart">
-                  <div class="dmc-hdr"></div>
-                  <div class="chart-svg-wrap">
-                    <svg viewBox="0 0 140 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <defs>
-                        <linearGradient id="cg-b" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.3"/>
-                          <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
-                        </linearGradient>
-                      </defs>
-                      <path class="chart-fill-fade" d="M0,100 L25,80 L50,68 L75,50 L100,58 L125,36 L140,22 L140,110 L0,110 Z" fill="url(#cg-b)"/>
-                      <path class="chart-line-draw anim-dur-2000 anim-d-1400 anim-both" d="M0,100 L25,80 L50,68 L75,50 L100,58 L125,36 L140,22" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <div class="dm-table">
-                <div class="dmt-row"><div class="dmt-dot" style="background:var(--cyan)"></div><div class="dmt-bar"></div><div class="dmt-badge" style="background:rgba(52,211,153,0.22)"></div></div>
-                <div class="dmt-row"><div class="dmt-dot" style="background:var(--purple)"></div><div class="dmt-bar" style="width:65%"></div><div class="dmt-badge" style="background:rgba(34,211,238,0.18)"></div></div>
-                <div class="dmt-row"><div class="dmt-dot" style="background:var(--amber)"></div><div class="dmt-bar" style="width:82%"></div><div class="dmt-badge" style="background:rgba(251,191,36,0.18)"></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <section id="pricing" class="pricing-section">
+      <h2 style="font-size: 2.5rem; margin-bottom: 16px;">One payment. Ship forever.</h2>
+      <p style="color:var(--text-secondary); max-width: 600px; margin: 0 auto 60px;">No subscriptions. Pay once and use it across every personal and client project you build.</p>
+      
+      <div class="grid-3">
+        <article class="card pricing-card hover-glow">
+          <h3 style="font-size:1.5rem; margin-bottom:8px;">HTML Kit</h3>
+          <div style="font-size:2.5rem; font-weight:700; margin-bottom:24px;">$39</div>
+          <ul style="text-align:left; color:var(--text-secondary); line-height:2; margin-bottom:32px; padding-left:20px;">
+            <li>13 HTML screens</li>
+            <li>CSS design system</li>
+            <li>Unlimited projects</li>
+            <li>Lifetime updates</li>
+          </ul>
+          <a href="#" class="btn btn-secondary" style="width:100%">Buy HTML Kit</a>
+        </article>
 
-    <!-- MARQUEE -->
-    <div class="strip" role="marquee" aria-label="Included screens">
-      <div class="strip-track">
-        <span class="strip-item"><span class="strip-dot" style="background:var(--cyan)"></span>Overview Dashboard</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--purple)"></span>Wallet Management</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--emerald)"></span>AI Prompt Logs</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--amber)"></span>Model Usage &amp; Cost</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--rose)"></span>Transaction Feed</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--cyan)"></span>Team Access Control</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--purple)"></span>Billing &amp; Invoices</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--emerald)"></span>Design Token System</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--amber)"></span>Auth Screens ×3</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--rose)"></span>Pricing Page</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--cyan)"></span>Component Library</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--purple)"></span>Profile Settings</span>
-        <!-- dupe for seamless loop -->
-        <span class="strip-item"><span class="strip-dot" style="background:var(--cyan)"></span>Overview Dashboard</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--purple)"></span>Wallet Management</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--emerald)"></span>AI Prompt Logs</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--amber)"></span>Model Usage &amp; Cost</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--rose)"></span>Transaction Feed</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--cyan)"></span>Team Access Control</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--purple)"></span>Billing &amp; Invoices</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--emerald)"></span>Design Token System</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--amber)"></span>Auth Screens ×3</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--rose)"></span>Pricing Page</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--cyan)"></span>Component Library</span>
-        <span class="strip-item"><span class="strip-dot" style="background:var(--purple)"></span>Profile Settings</span>
-      </div>
-    </div>
+        <article class="card pricing-card hover-glow" style="border-color: var(--accent-cyan);">
+          <div class="badge info" style="position:absolute; top:-12px; right:24px;">Most Popular</div>
+          <h3 style="font-size:1.5rem; margin-bottom:8px;">HTML + Figma</h3>
+          <div style="font-size:2.5rem; font-weight:700; margin-bottom:24px;">$59</div>
+          <ul style="text-align:left; color:var(--text-secondary); line-height:2; margin-bottom:32px; padding-left:20px;">
+            <li>Everything in HTML</li>
+            <li>Figma UI Kit</li>
+            <li>Tokens sync guide</li>
+            <li>Priority support</li>
+          </ul>
+          <a href="#" class="btn btn-primary" style="width:100%">Buy HTML + Figma</a>
+        </article>
 
-    <!-- SCREENS BENTO GRID -->
-    <section class="screens-section" id="screens">
-      <div class="container">
-        <div class="screens-header reveal">
-          <div class="section-tag">All 13 Screens</div>
-          <h2 class="section-title">Every screen. <span class="text-g">Ready from day one.</span></h2>
-          <p class="section-sub">Copy-paste HTML sections into whatever framework you use. The shared stylesheet handles spacing, color, and layout automatically.</p>
-        </div>
-
-        <div class="bento-grid">
-
-          <a href="preview/dashboard-overview.html" class="bento-item wide reveal" id="bi-1">
-            <div class="bento-preview">
-              <div class="bento-ui">
-                <div class="bui-hdr">
-                  <div class="bui-dot" style="background:var(--cyan)"></div>
-                  <div class="bui-bar" style="flex:1"></div>
-                  <div class="bui-bar" style="width:22px"></div>
-                </div>
-                <div class="bui-row">
-                  <div class="bui-card"></div><div class="bui-card"></div>
-                  <div class="bui-card"></div><div class="bui-card"></div>
-                </div>
-                <div class="bui-chart"></div>
-                <div class="bui-trow"></div><div class="bui-trow"></div>
-              </div>
-            </div>
-            <div class="bento-body">
-              <div class="bento-tag">Core</div>
-              <div class="bento-title">Overview Dashboard</div>
-              <div class="bento-desc">Central ops hub — live KPIs, network throughput chart, and activity feed in one view.</div>
-            </div>
-            <div class="bento-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </a>
-
-          <a href="preview/web3-wallets.html" class="bento-item reveal" id="bi-2" style="transition-delay:0.08s">
-            <div class="bento-preview">
-              <div class="bento-ui">
-                <div class="bui-hdr"><div class="bui-dot" style="background:var(--purple)"></div><div class="bui-bar" style="flex:1"></div></div>
-                <div class="bui-card" style="height:38px;background:linear-gradient(135deg,rgba(167,139,250,0.14),rgba(34,211,238,0.09));border-radius:8px"></div>
-                <div class="bui-row"><div class="bui-card"></div><div class="bui-card"></div></div>
-                <div class="bui-trow"></div>
-              </div>
-            </div>
-            <div class="bento-body">
-              <div class="bento-tag">Web3</div>
-              <div class="bento-title">Wallet Management</div>
-              <div class="bento-desc">Treasury overview with multi-chain address tracking, signer roles, and balance display.</div>
-            </div>
-            <div class="bento-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </a>
-
-          <a href="preview/ai-prompts.html" class="bento-item reveal" id="bi-3" style="transition-delay:0.12s">
-            <div class="bento-preview">
-              <div class="bento-ui">
-                <div class="bui-hdr"><div class="bui-dot" style="background:var(--amber)"></div><div class="bui-bar" style="flex:1"></div></div>
-                <div class="bui-card" style="height:22px;background:rgba(251,191,36,0.09);border-radius:6px"></div>
-                <div class="bui-trow"></div><div class="bui-trow"></div><div class="bui-trow"></div>
-              </div>
-            </div>
-            <div class="bento-body">
-              <div class="bento-tag">AI Ops</div>
-              <div class="bento-title">Prompt Logs</div>
-              <div class="bento-desc">Full audit trail for AI requests — latency, token counts, routing, and status per call.</div>
-            </div>
-            <div class="bento-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </a>
-
-          <a href="preview/auth-login.html" class="bento-item reveal" id="bi-4" style="transition-delay:0.16s">
-            <div class="bento-preview">
-              <div class="bento-ui" style="display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0">
-                <div style="background:rgba(34,211,238,0.04);height:100%;padding:8px">
-                  <div class="bui-trow" style="width:70%;margin-bottom:5px"></div>
-                  <div class="bui-trow" style="width:90%"></div>
-                </div>
-                <div style="padding:8px;display:flex;flex-direction:column;gap:5px">
-                  <div class="bui-card" style="height:16px"></div>
-                  <div class="bui-card" style="height:16px"></div>
-                  <div style="height:14px;border-radius:6px;background:var(--brand);opacity:0.7"></div>
-                </div>
-              </div>
-            </div>
-            <div class="bento-body">
-              <div class="bento-tag">Auth</div>
-              <div class="bento-title">Login Screen</div>
-              <div class="bento-desc">Split-panel layout with social auth, 2FA toggle, and password reset flow.</div>
-            </div>
-            <div class="bento-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </a>
-
-          <a href="preview/marketing-pricing.html" class="bento-item reveal" id="bi-5" style="transition-delay:0.20s">
-            <div class="bento-preview">
-              <div class="bento-ui">
-                <div class="bui-hdr"><div class="bui-bar" style="flex:1"></div></div>
-                <div class="bui-row" style="align-items:flex-start;gap:5px">
-                  <div class="bui-card" style="height:50px"></div>
-                  <div class="bui-card" style="height:64px;border-color:rgba(34,211,238,0.32);background:rgba(34,211,238,0.06)"></div>
-                  <div class="bui-card" style="height:50px"></div>
-                </div>
-              </div>
-            </div>
-            <div class="bento-body">
-              <div class="bento-tag">Marketing</div>
-              <div class="bento-title">Pricing Page</div>
-              <div class="bento-desc">Clean three-tier SaaS pricing layout with feature comparison list and CTA buttons.</div>
-            </div>
-            <div class="bento-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </a>
-
-          <a href="preview/components.html" class="bento-item reveal" id="bi-6" style="transition-delay:0.24s">
-            <div class="bento-preview">
-              <div class="bento-ui">
-                <div class="bui-row" style="gap:5px">
-                  <div style="height:14px;border-radius:999px;background:var(--brand);width:38px;opacity:0.8"></div>
-                  <div style="height:14px;border-radius:999px;border:1px solid var(--b-mid);width:34px"></div>
-                  <div style="height:14px;border-radius:5px;background:rgba(52,211,153,0.2);width:30px"></div>
-                </div>
-                <div class="bui-row"><div class="bui-card" style="height:20px"></div><div class="bui-card" style="height:20px"></div></div>
-                <div class="bui-trow"></div><div class="bui-trow"></div>
-              </div>
-            </div>
-            <div class="bento-body">
-              <div class="bento-tag">System</div>
-              <div class="bento-title">Component Library</div>
-              <div class="bento-desc">Buttons, badges, forms, stat cards, tables, and progress bars — all in a single reference page.</div>
-            </div>
-            <div class="bento-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </a>
-
-          <!-- View all card -->
-          <a href="preview/index.html" class="bento-item wide reveal" id="bi-7" style="transition-delay:0.28s;border-style:dashed;border-color:var(--b-mid)">
-            <div style="height:100%;display:grid;place-items:center;background:rgba(34,211,238,0.025);">
-              <div style="text-align:center">
-                <div style="width:44px;height:44px;border-radius:14px;background:rgba(34,211,238,0.1);color:var(--cyan);display:grid;place-items:center;margin:0 auto 12px;animation:float 3s ease-in-out infinite">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-                </div>
-                <div style="font-size:0.95rem;font-weight:600;margin-bottom:4px">Browse all 13 screens</div>
-                <div style="font-size:0.8rem;color:var(--t2)">Dashboard, Web3, AI Ops, Auth, Settings, Marketing</div>
-              </div>
-            </div>
-          </a>
-
-        </div>
+        <article class="card pricing-card hover-glow">
+          <h3 style="font-size:1.5rem; margin-bottom:8px;">Agency</h3>
+          <div style="font-size:2.5rem; font-weight:700; margin-bottom:24px;">$79</div>
+          <ul style="text-align:left; color:var(--text-secondary); line-height:2; margin-bottom:32px; padding-left:20px;">
+            <li>Everything in Pro</li>
+            <li>Extended resale rights</li>
+            <li>White-label delivery</li>
+            <li>Onboarding call</li>
+          </ul>
+          <a href="#" class="btn btn-secondary" style="width:100%">Buy Agency</a>
+        </article>
       </div>
     </section>
 
-    <div class="divider-line"></div>
-
-    <!-- FEATURES -->
-    <section id="features">
-      <div class="container">
-        <div class="reveal">
-          <div class="section-tag">Built Right</div>
-          <h2 class="section-title">Not a template.<br><span class="text-g">A working system.</span></h2>
-          <p class="section-sub">Every component shares the same CSS custom properties. Change one value — every screen in the kit updates instantly.</p>
-        </div>
-        <div class="features-grid">
-
-          <div class="feat-card wide reveal anim-fade-up anim-both anim-d-100" id="fc-1">
-            <div class="feat-icon fi-c">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            </div>
-            <h3 class="feat-title">CSS Design Token System</h3>
-            <p class="feat-desc">One stylesheet drives colors, spacing, radius, and typography for all screens. Swap your brand palette in the <code style="font-family:var(--mono);font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px">:root{}</code> block and the entire product follows — no per-file overrides, no hunting through inline styles.</p>
-          </div>
-
-          <div class="feat-card reveal anim-fade-up anim-both anim-d-200" id="fc-2">
-            <div class="feat-icon fi-p">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-            </div>
-            <h3 class="feat-title">Zero Build Dependencies</h3>
-            <p class="feat-desc">Plain HTML and CSS. No Node, no bundler, no runtime. Open in a browser and it works.</p>
-          </div>
-
-          <div class="feat-card reveal anim-fade-up anim-both anim-d-100" id="fc-3">
-            <div class="feat-icon fi-e">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <h3 class="feat-title">Unlimited Commercial Use</h3>
-            <p class="feat-desc">Client projects, SaaS products, resale — the license covers everything with no attribution requirement.</p>
-          </div>
-
-          <div class="feat-card reveal anim-fade-up anim-both anim-d-200" id="fc-4">
-            <div class="feat-icon fi-a">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            </div>
-            <h3 class="feat-title">Native Dark Canvas</h3>
-            <p class="feat-desc">Designed from the start on a dark background — not retrofitted. Every shadow, glow, and contrast value is tuned for dark mode specifically.</p>
-          </div>
-
-          <div class="feat-card reveal anim-fade-up anim-both anim-d-300" id="fc-5">
-            <div class="feat-icon fi-r">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
-            </div>
-            <h3 class="feat-title">Stack-Agnostic HTML</h3>
-            <p class="feat-desc">Copy sections into React, Next.js, Vue, Svelte, or raw HTML. No JSX transformation needed — paste and adjust class names.</p>
-          </div>
-
-          <div class="feat-card reveal anim-fade-up anim-both anim-d-400" id="fc-6">
-            <div class="feat-icon fi-c">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg>
-            </div>
-            <h3 class="feat-title">Figma Variables Sync</h3>
-            <p class="feat-desc">The JSON token file drops straight into Figma Variables so your design files stay locked to the code — no manual re-keying between tools.</p>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <div class="divider-line"></div>
-
-    <!-- TOKENS SHOWCASE -->
-    <section>
-      <div class="container">
-        <div class="tokens-layout">
-          <div class="reveal">
-            <div class="code-frame">
-              <div class="code-chrome">
-                <div class="cc-dots">
-                  <div class="cc-dot" style="background:#ff5f57"></div>
-                  <div class="cc-dot" style="background:#febc2e"></div>
-                  <div class="cc-dot" style="background:#28c840"></div>
-                </div>
-                <div class="code-filename">chainops.css — :root{}</div>
-              </div>
-              <div class="code-body">
-<span class="ck-c">/* Color palette */</span><br>
-<span class="ck-b">:root {</span><br>
-&nbsp;&nbsp;<span class="ck-v">--bg-base</span>: <span class="ck-h">#070b14</span>;<br>
-&nbsp;&nbsp;<span class="ck-v">--bg-panel</span>: <span class="ck-k">rgba(13,19,32,0.75)</span>;<br>
-&nbsp;&nbsp;<span class="ck-v">--text-primary</span>: <span class="ck-h">#f8fafc</span>;<br>
-&nbsp;&nbsp;<span class="ck-v">--accent-cyan</span>: <span class="ck-h">#22d3ee</span>;<br>
-&nbsp;&nbsp;<span class="ck-v">--accent-purple</span>: <span class="ck-h">#a78bfa</span>;<br>
-&nbsp;&nbsp;<span class="ck-v">--accent-emerald</span>: <span class="ck-h">#34d399</span>;<br>
-&nbsp;&nbsp;<span class="ck-v">--accent-amber</span>: <span class="ck-h">#fbbf24</span>;<br>
-<br>
-<span class="ck-c">  /* Brand gradient */</span><br>
-&nbsp;&nbsp;<span class="ck-v">--gradient-brand</span>:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck-k">linear-gradient(135deg,</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck-h">#22d3ee</span> <span class="ck-s">0%</span>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck-h">#818cf8</span> <span class="ck-s">52%</span>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck-h">#c084fc</span> <span class="ck-s">100%</span><span class="ck-k">)</span>;<br>
-<br>
-<span class="ck-c">  /* Spacing scale */</span><br>
-&nbsp;&nbsp;<span class="ck-v">--radius-sm</span>: <span class="ck-s">10px</span>;<br>
-&nbsp;&nbsp;<span class="ck-v">--radius-md</span>: <span class="ck-s">16px</span>;<br>
-&nbsp;&nbsp;<span class="ck-v">--radius-lg</span>: <span class="ck-s">24px</span>;<br>
-<span class="ck-b">}</span>
-              </div>
-            </div>
-            <div class="swatches">
-              <div class="swatch" style="background:#22d3ee" title="#22d3ee — Cyan" data-c="#22d3ee"></div>
-              <div class="swatch" style="background:#a78bfa" title="#a78bfa — Purple" data-c="#a78bfa"></div>
-              <div class="swatch" style="background:#34d399" title="#34d399 — Emerald" data-c="#34d399"></div>
-              <div class="swatch" style="background:#fbbf24" title="#fbbf24 — Amber" data-c="#fbbf24"></div>
-              <div class="swatch" style="background:#fb7185" title="#fb7185 — Rose" data-c="#fb7185"></div>
-              <div class="swatch" style="background:#070b14" title="#070b14 — Base" data-c="#070b14"></div>
-              <div class="swatch" style="background:#0d1320" title="#0d1320 — Raised" data-c="#0d1320"></div>
-              <div class="swatch" style="background:#f8fafc" title="#f8fafc — Text" data-c="#f8fafc"></div>
-            </div>
-          </div>
-
-          <div class="reveal" style="transition-delay:0.15s">
-            <div class="section-tag">Design System</div>
-            <h2 class="section-title" style="margin-bottom:30px">Tokens that work<br><span class="text-g">across every tool</span></h2>
-            <div class="token-points">
-              <div class="tp">
-                <div class="tp-icon" style="background:rgba(34,211,238,0.1);color:var(--cyan)">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-                </div>
-                <div>
-                  <div class="tp-title">CSS custom properties throughout</div>
-                  <div class="tp-desc">Every color and spacing value is a variable. Edit the root block once and all thirteen screens update without touching individual files.</div>
-                </div>
-              </div>
-              <div class="tp">
-                <div class="tp-icon" style="background:rgba(167,139,250,0.1);color:var(--purple)">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                </div>
-                <div>
-                  <div class="tp-title">JSON export for Figma</div>
-                  <div class="tp-desc">Drop <code style="font-family:var(--mono);font-size:0.8em;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:4px">tokens.json</code> into Figma Variables or Style Dictionary to keep design files in sync with the codebase.</div>
-                </div>
-              </div>
-              <div class="tp">
-                <div class="tp-icon" style="background:rgba(52,211,153,0.1);color:var(--emerald)">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                </div>
-                <div>
-                  <div class="tp-title">Responsive out of the box</div>
-                  <div class="tp-desc">CSS Grid and <code style="font-family:var(--mono);font-size:0.8em;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:4px">clamp()</code> handle layout at any width. Sidebar collapses, cards stack, type scales — nothing breaks below 400px.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider-line"></div>
-
-    <!-- INSIDE / CONTENTS -->
-    <section id="inside">
-      <div class="container">
-        <div class="reveal" style="text-align:center;margin-bottom:52px">
-          <div class="section-tag">Package Contents</div>
-          <h2 class="section-title">Every file. <span class="text-g">No surprises.</span></h2>
-          <p class="section-sub" style="margin:0 auto">Here is the exact download structure. No filler files, no locked extras.</p>
-        </div>
-        <div class="inside-grid">
-          <div class="inside-row reveal">
-            <div class="ir-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
-            <div><div class="ir-title">13 production HTML screens</div><div class="ir-desc">Dashboard, Wallets, Transactions, AI Prompts, Model Usage, Profile, Billing, Team, Pricing, Components, Login, Signup, Wallet Connect.</div></div>
-          </div>
-          <div class="inside-row reveal" style="transition-delay:0.07s">
-            <div class="ir-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-            <div><div class="ir-title">assets/css/chainops.css</div><div class="ir-desc">680+ lines of design tokens, grid helpers, component styles, and responsive breakpoints shared across every screen.</div></div>
-          </div>
-          <div class="inside-row reveal" style="transition-delay:0.11s">
-            <div class="ir-icon" style="background:rgba(167,139,250,0.1);color:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-            <div><div class="ir-title">design-tokens/tokens.json</div><div class="ir-desc">Machine-readable token file compatible with Figma Variables, Style Dictionary, and Tailwind config.</div></div>
-          </div>
-          <div class="inside-row reveal" style="transition-delay:0.15s">
-            <div class="ir-icon" style="background:rgba(251,191,36,0.1);color:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>
-            <div><div class="ir-title">cover/ — Gumroad product cover</div><div class="ir-desc">Screenshot-ready HTML at 1280×720. Open in a browser, screenshot, and upload directly to your Gumroad listing.</div></div>
-          </div>
-          <div class="inside-row reveal" style="transition-delay:0.18s">
-            <div class="ir-icon" style="background:rgba(52,211,153,0.1);color:var(--emerald)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-            <div><div class="ir-title">docs/ — listing copy and license</div><div class="ir-desc">Ready-to-paste Gumroad product description and a full commercial license covering unlimited client and SaaS projects.</div></div>
-          </div>
-          <div class="inside-row reveal" style="transition-delay:0.22s">
-            <div class="ir-icon" style="background:rgba(251,113,133,0.1);color:var(--rose)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg></div>
-            <div><div class="ir-title">figma/ — import walkthrough</div><div class="ir-desc">Step-by-step instructions for pulling the token JSON into Figma Variables so design and code stay in sync automatically.</div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider-line"></div>
-
-    <!-- PRICING -->
-    <section id="pricing">
-      <div class="container">
-        <div class="pricing-header reveal">
-          <div class="section-tag">Pricing</div>
-          <h2 class="section-title">One payment. <span class="text-g">Ship forever.</span></h2>
-          <p class="section-sub">No subscriptions. No per-seat pricing. No renewal. Pay once and use it across every project you build.</p>
-        </div>
-        <div class="pricing-cols">
-          <div class="pricing-card reveal">
-            <div class="pc-tier">HTML Kit</div>
-            <div class="pc-price"><sup>$</sup>39</div>
-            <div class="pc-desc">Everything you need to build and launch a Web3 or AI SaaS product from a solid starting point.</div>
-            <ul class="pc-features">
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>13 production HTML screens</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Full design system CSS</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Design tokens JSON</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Commercial license — unlimited projects</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Gumroad cover and listing copy</li>
-            </ul>
-            <a href="#" class="btn btn-ghost" style="width:100%;justify-content:center">Buy HTML Kit — $39</a>
-          </div>
-          <div class="pricing-card best reveal" style="transition-delay:0.1s">
-            <div class="pc-tier">HTML + Figma</div>
-            <div class="pc-price" style="background:var(--brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><sup style="-webkit-text-fill-color:initial;color:var(--cyan)">$</sup>59</div>
-            <div class="pc-desc">Adds Figma Variables integration so designers and developers work from the same source of truth.</div>
-            <ul class="pc-features">
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Everything in HTML Kit</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Figma Variables import guide</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Design-to-code parity walkthrough</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Priority email support</li>
-            </ul>
-            <a href="#" class="btn btn-brand" style="width:100%;justify-content:center">Buy HTML + Figma — $59</a>
-          </div>
-          <div class="pricing-card reveal" style="transition-delay:0.2s">
-            <div class="pc-tier">Agency</div>
-            <div class="pc-price"><sup>$</sup>79</div>
-            <div class="pc-desc">Extended license for teams delivering client products built on top of ChainOps screens.</div>
-            <ul class="pc-features">
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Everything in HTML + Figma</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>Extended resale rights</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>White-label delivery rights</li>
-              <li><div class="pc-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></div>30-minute onboarding call</li>
-            </ul>
-            <a href="#" class="btn btn-ghost" style="width:100%;justify-content:center">Buy Agency — $79</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider-line"></div>
-
-    <!-- FAQ -->
-    <section id="faq">
-      <div class="container">
-        <div class="faq-layout">
-          <div class="reveal">
-            <div class="section-tag">FAQ</div>
-            <h2 class="section-title" style="font-size:clamp(1.6rem,3vw,2.5rem)">Questions people ask before buying</h2>
-            <p class="section-sub" style="font-size:0.88rem;margin-top:10px">Something not answered here? Contact details are in the package docs.</p>
-          </div>
-          <div class="faq-stack reveal" style="transition-delay:0.12s">
-
-            <div class="faq-row open" id="fq-1">
-              <button class="faq-trigger" onclick="faqToggle('fq-1')" aria-expanded="true" aria-controls="fq-1-body">
-                What stack does this work with?
-                <div class="faq-icon-wrap"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg></div>
-              </button>
-              <div class="faq-body" id="fq-1-body" role="region">
-                <div class="faq-body-inner">Everything is plain HTML and CSS with no framework required. You can paste sections into React, Next.js, Vue, Svelte, or keep them as static files. The only external dependency is Google Fonts, which you can replace with a local font or any alternative.</div>
-              </div>
-            </div>
-
-            <div class="faq-row" id="fq-2">
-              <button class="faq-trigger" onclick="faqToggle('fq-2')" aria-expanded="false" aria-controls="fq-2-body">
-                Can I ship this in a client project?
-                <div class="faq-icon-wrap"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg></div>
-              </button>
-              <div class="faq-body" id="fq-2-body" role="region">
-                <div class="faq-body-inner">The standard license covers unlimited personal and commercial projects, including client deliverables. The Agency license adds white-labeling and resale — relevant if you build products that other people then sell on.</div>
-              </div>
-            </div>
-
-            <div class="faq-row" id="fq-3">
-              <button class="faq-trigger" onclick="faqToggle('fq-3')" aria-expanded="false" aria-controls="fq-3-body">
-                How do I change the color palette?
-                <div class="faq-icon-wrap"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg></div>
-              </button>
-              <div class="faq-body" id="fq-3-body" role="region">
-                <div class="faq-body-inner">Open <code style="font-family:var(--mono);font-size:0.88em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px">assets/css/chainops.css</code> and edit the values inside <code style="font-family:var(--mono);font-size:0.88em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px">:root{}</code>. Every screen picks up the change automatically — no find-and-replace across individual files.</div>
-              </div>
-            </div>
-
-            <div class="faq-row" id="fq-4">
-              <button class="faq-trigger" onclick="faqToggle('fq-4')" aria-expanded="false" aria-controls="fq-4-body">
-                Does the Figma source file come with it?
-                <div class="faq-icon-wrap"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg></div>
-              </button>
-              <div class="faq-body" id="fq-4-body" role="region">
-                <div class="faq-body-inner">The HTML + Figma and Agency tiers include a full walkthrough for importing the design tokens as Figma Variables. If you want a built-out Figma component library on top of that, reach out and we can quote it separately.</div>
-              </div>
-            </div>
-
-            <div class="faq-row" id="fq-5">
-              <button class="faq-trigger" onclick="faqToggle('fq-5')" aria-expanded="false" aria-controls="fq-5-body">
-                Are future updates included?
-                <div class="faq-icon-wrap"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg></div>
-              </button>
-              <div class="faq-body" id="fq-5-body" role="region">
-                <div class="faq-body-inner">All v1.x updates are free for existing buyers. Gumroad delivers the updated file automatically when a new version ships. Major version releases (v2.0+) may carry a discounted upgrade price.</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider-line"></div>
-
-    <!-- CTA -->
-    <section class="cta-section" aria-label="Purchase call to action">
-      <div class="cta-bg"></div>
-      <div class="section-tag reveal" style="margin:0 auto 28px">One-time purchase</div>
-      <h2 class="cta-title reveal" style="transition-delay:0.1s">Stop starting from scratch</h2>
-      <p class="cta-sub reveal" style="transition-delay:0.2s">You have a product to build. Start with screens that look finished and a design system that holds them together.</p>
-      <div class="cta-actions reveal" style="transition-delay:0.3s">
-        <a href="preview/index.html" class="btn btn-ghost btn-xl">Browse Screens First</a>
-        <a href="#pricing" class="btn btn-brand btn-xl">
-          Get ChainOps UI Kit
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
-      </div>
-      <div class="cta-note reveal" style="transition-delay:0.4s">Instant download. Commercial license. No subscription.</div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div class="footer-brand">
-        <div class="footer-logo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-            <rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/>
-            <rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/>
-          </svg>
-        </div>
-        <span class="footer-name">ChainOps UI Kit</span>
-        <span class="footer-copy">v1.0.0</span>
-      </div>
-      <ul class="footer-links">
-        <li><a href="preview/index.html">All Screens</a></li>
-        <li><a href="docs/LICENSE.txt">License</a></li>
-        <li><a href="docs/GUMROAD_LISTING.md">About</a></li>
-      </ul>
-      <div class="footer-copy">Built for product teams who need to move fast.</div>
+    <footer style="text-align:center; padding: 60px 24px; color: var(--text-secondary); border-top: 1px solid var(--border-dim); margin-top: 40px;">
+      <p>&copy; 2026 ChainOps UI Kit. Plain HTML and CSS.</p>
     </footer>
+  </main>
 
-  </div><!-- /page -->
-
-  <script>
-  /* ================================================================
-     PARTICLE CANVAS
-  ================================================================ */
-  (function(){
-    const c = document.getElementById('bg-canvas');
-    const ctx = c.getContext('2d');
-    let W, H, pts = [];
-    const COLS = ['#22d3ee','#a78bfa','#34d399','#818cf8'];
-    function resize(){ W = c.width = innerWidth; H = c.height = innerHeight; }
-    function Pt(){
-      this.x  = Math.random()*W;
-      this.y  = Math.random()*H;
-      this.vx = (Math.random()-.5)*.3;
-      this.vy = (Math.random()-.5)*.3;
-      this.r  = Math.random()*1.4+.4;
-      this.col= COLS[0|Math.random()*4];
-      this.a  = Math.random()*.45+.1;
-    }
-    Pt.prototype.tick=function(){
-      this.x+=this.vx; this.y+=this.vy;
-      if(this.x<0||this.x>W) this.vx*=-1;
-      if(this.y<0||this.y>H) this.vy*=-1;
-    };
-    function init(){
-      resize();
-      pts=[];
-      for(let i=0;i<70;i++) pts.push(new Pt());
-    }
-    function frame(){
-      ctx.clearRect(0,0,W,H);
-      for(let i=0;i<pts.length;i++){
-        for(let j=i+1;j<pts.length;j++){
-          const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
-          const d=Math.sqrt(dx*dx+dy*dy);
-          if(d<140){
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x,pts[i].y);
-            ctx.lineTo(pts[j].x,pts[j].y);
-            ctx.strokeStyle=`rgba(34,211,238,${(1-d/140)*.065})`;
-            ctx.lineWidth=.5;
-            ctx.stroke();
-          }
-        }
-      }
-      pts.forEach(p=>{
-        p.tick();
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle=p.col;
-        ctx.globalAlpha=p.a;
-        ctx.fill();
-      });
-      ctx.globalAlpha=1;
-      requestAnimationFrame(frame);
-    }
-    window.addEventListener('resize',()=>{ resize(); });
-    init(); frame();
-  })();
-
-  /* ================================================================
-     CURSOR TRAIL
-  ================================================================ */
-  const trail = document.getElementById('cursor-trail');
-  document.addEventListener('mousemove', e => {
-    trail.style.left = e.clientX + 'px';
-    trail.style.top  = e.clientY + 'px';
-  });
-
-  /* ================================================================
-     NAV SCROLL STATE
-  ================================================================ */
-  const nav = document.getElementById('main-nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', scrollY > 30);
-  }, { passive: true });
-
-  /* ================================================================
-     SCROLL REVEAL
-  ================================================================ */
-  const revEls = document.querySelectorAll('.reveal');
-  const ro = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        ro.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.10 });
-  revEls.forEach(el => ro.observe(el));
-
-  /* ================================================================
-     HERO STAT COUNTER
-  ================================================================ */
-  const counterEls = document.querySelectorAll('[data-target]');
-  const co = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const el = e.target;
-      const target = +el.dataset.target;
-      const dur = 1600;
-      const step = Math.ceil(target / (dur / 16));
-      let cur = 0;
-      const tick = () => {
-        cur = Math.min(cur + step, target);
-        el.textContent = cur;
-        if (cur < target) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-      co.unobserve(el);
-    });
-  }, { threshold: 0.5 });
-  counterEls.forEach(el => co.observe(el));
-
-  /* ================================================================
-     3D CARD TILT — feature cards
-  ================================================================ */
-  document.querySelectorAll('.feat-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width;
-      const y = (e.clientY - r.top)  / r.height;
-      const tiltX = (y - 0.5) * -10;
-      const tiltY = (x - 0.5) *  10;
-      card.style.transform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(6px)`;
-      card.style.setProperty('--fx', (x*100).toFixed(1)+'%');
-      card.style.setProperty('--fy', (y*100).toFixed(1)+'%');
-    });
-    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-  });
-
-  /* ================================================================
-     3D CARD TILT — bento items
-  ================================================================ */
-  document.querySelectorAll('.bento-item').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width;
-      const y = (e.clientY - r.top)  / r.height;
-      const tX = (y - 0.5) * -7;
-      const tY = (x - 0.5) *  7;
-      card.style.transform = `translateY(-5px) scale(1.01) perspective(600px) rotateX(${tX}deg) rotateY(${tY}deg)`;
-      card.style.setProperty('--mx', (x*100).toFixed(1)+'%');
-      card.style.setProperty('--my', (y*100).toFixed(1)+'%');
-    });
-    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-  });
-
-  /* ================================================================
-     BROWSER FRAME — flatten on scroll
-  ================================================================ */
-  const bf = document.getElementById('browser-frame');
-  window.addEventListener('scroll', () => {
-    if (scrollY > 400) bf.classList.add('flat');
-    else bf.classList.remove('flat');
-  }, { passive: true });
-
-  /* ================================================================
-     FAQ ACCORDION
-  ================================================================ */
-  function faqToggle(id) {
-    const row = document.getElementById(id);
-    const isOpen = row.classList.contains('open');
-    document.querySelectorAll('.faq-row').forEach(r => {
-      r.classList.remove('open');
-      r.querySelector('.faq-trigger').setAttribute('aria-expanded','false');
-    });
-    if (!isOpen) {
-      row.classList.add('open');
-      row.querySelector('.faq-trigger').setAttribute('aria-expanded','true');
-    }
-  }
-
-  /* ================================================================
-     SWATCH CLICK — copy to clipboard
-  ================================================================ */
-  document.querySelectorAll('.swatch').forEach(sw => {
-    sw.addEventListener('click', () => {
-      const v = sw.dataset.c;
-      navigator.clipboard?.writeText(v).catch(()=>{});
-      sw.style.outline = '2px solid #22d3ee';
-      sw.style.outlineOffset = '2px';
-      setTimeout(() => { sw.style.outline=''; sw.style.outlineOffset=''; }, 700);
-    });
-  });
-
-  /* ================================================================
-     RIPPLE BUTTON EFFECT
-  ================================================================ */
-  document.querySelectorAll('.btn-ripple').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const r = btn.getBoundingClientRect();
-      const el = document.createElement('span');
-      el.className = 'ripple-el';
-      const size = Math.max(r.width, r.height);
-      el.style.cssText = `
-        width:${size}px;height:${size}px;
-        left:${e.clientX-r.left-size/2}px;
-        top:${e.clientY-r.top-size/2}px;
-        position:absolute;border-radius:50%;
-        background:rgba(255,255,255,0.25);
-        animation:ripple 0.6s ease-out forwards;
-      `;
-      btn.appendChild(el);
-      setTimeout(() => el.remove(), 700);
-    });
-  });
-
-  /* ================================================================
-     PARALLAX HERO BLOBS
-  ================================================================ */
-  document.addEventListener('mousemove', e => {
-    const x = (e.clientX / innerWidth  - 0.5) * 20;
-    const y = (e.clientY / innerHeight - 0.5) * 20;
-    const blobs = document.querySelectorAll('.hero-blob');
-    blobs.forEach((b, i) => {
-      const factor = (i + 1) * 0.4;
-      b.style.transform = `translate(${x*factor}px, ${y*factor}px)`;
-    });
-  });
-
-  /* ================================================================
-     PROGRESS BARS — animate on visible
-  ================================================================ */
-  const progEls = document.querySelectorAll('.progress > span');
-  const po = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.animation = 'progressBarH 1.4s cubic-bezier(0.4,0,0.2,1) both';
-        po.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  progEls.forEach(el => po.observe(el));
-  </script>
+  <script src="assets/js/animations.js"></script>
 </body>
 </html>
