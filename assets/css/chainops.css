@@ -37,7 +37,10 @@
 html,
 body {
   margin: 0;
-  min-height: 100%;
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 body {
@@ -78,6 +81,7 @@ textarea {
   padding: 24px 18px;
   border-right: 1px solid var(--border-subtle);
   background: rgba(7, 11, 20, 0.92);
+  min-height: 100vh;
   backdrop-filter: blur(18px);
   display: flex;
   flex-direction: column;
@@ -679,3 +683,11 @@ td.mono {
     flex: 1;
   }
 }
+
+
+/* Failsafe layout fixes */
+html { background: #070b14; height: 100%; }
+body { min-height: 100%; background-attachment: fixed !important; background-size: cover !important; }
+.app-shell { min-height: 100%; display: flex; flex-direction: row; }
+.sidebar { height: 100vh; position: sticky; top: 0; flex-shrink: 0; width: var(--sidebar-width); }
+.main { flex-grow: 1; min-height: 100vh; }
