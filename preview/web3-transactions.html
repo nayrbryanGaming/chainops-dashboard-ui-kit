@@ -1,77 +1,70 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Transactions — ChainOps UI Kit</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/chainops.css" />
   <link rel="stylesheet" href="../assets/css/animations.css" />
+  <style>:root{--font:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}body{font-family:var(--font)}.mono{font-family:var(--mono);font-size:0.85em}</style>
 </head>
 <body>
   <div class="app-shell">
-    
-<aside class="sidebar">
-  <div class="brand">
-    <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg></div>
-    <div class="brand-copy"><strong>ChainOps</strong><span>Web3 + AI Control Panel</span></div>
-  </div>
-  <div class="nav-section-label">Dashboard</div><div class="nav-list"><a class="nav-link" href="dashboard-overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span>Overview</span></a><a class="nav-link" href="web3-wallets.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span>Wallets</span></a><a class="nav-link active" href="web3-transactions.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span>Transactions</span></a></div><div class="nav-section-label">AI Ops</div><div class="nav-list"><a class="nav-link" href="ai-prompts.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M5 19l1 3 1-3 3-1-3-1-1-3-1 3-3 1 3 1z"/></svg><span>Prompt Logs</span></a><a class="nav-link" href="ai-usage.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M5 19l1 3 1-3 3-1-3-1-1-3-1 3-3 1 3 1z"/></svg><span>Model Usage</span></a></div><div class="nav-section-label">Settings</div><div class="nav-list"><a class="nav-link" href="settings-profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span>Profile</span></a><a class="nav-link" href="settings-billing.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span>Billing</span></a><a class="nav-link" href="settings-team.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span>Team</span></a></div><div class="nav-section-label">Marketing</div><div class="nav-list"><a class="nav-link" href="marketing-pricing.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M14 3v5h5"/></svg><span>Pricing Page</span></a><a class="nav-link" href="components.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M14 3v5h5"/></svg><span>Components</span></a></div>
-  <div class="nav-section-label">Auth Screens</div><div class="nav-list"><a class="nav-link" href="auth-login.html"><span>Login</span></a><a class="nav-link" href="auth-signup.html"><span>Sign Up</span></a><a class="nav-link" href="auth-wallet.html"><span>Wallet Connect</span></a></div>
-  <div class="sidebar-card">
-    <p>Upgrade to Pro for multi-chain analytics and team seats.</p>
-    <a class="btn btn-primary" href="settings-billing.html">Upgrade Plan</a>
-  </div>
-</aside>
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg></div><div class="brand-copy"><strong>ChainOps</strong><span>Web3 + AI Panel</span></div></div>
+      <div class="nav-section-label">Dashboard</div><div class="nav-list"><a class="nav-link" href="dashboard-overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span>Overview</span></a></div>
+      <div class="nav-section-label">Web3</div><div class="nav-list"><a class="nav-link" href="web3-wallets.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 13a1 1 0 1 0 2 0 1 1 0 0 0-2 0z"/></svg><span>Wallets</span></a><a class="nav-link active" href="web3-transactions.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 16V4m0 0L3 8m4-4 4 4M17 8v12m0 0 4-4m-4 4-4-4"/></svg><span>Transactions</span></a></div>
+      <div class="nav-section-label">AI Ops</div><div class="nav-list"><a class="nav-link" href="ai-prompts.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/></svg><span>Prompt Logs</span></a><a class="nav-link" href="ai-usage.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Model Usage</span></a></div>
+      <div class="nav-section-label">Settings</div><div class="nav-list"><a class="nav-link" href="settings-profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Profile</span></a><a class="nav-link" href="settings-billing.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span>Billing</span></a><a class="nav-link" href="settings-team.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21c0-3.5 3-6 7-6"/><circle cx="17" cy="11" r="3"/><path d="M14 21c0-2.8 2-4.5 4.5-4.5"/></svg><span>Team</span></a></div>
+      <div class="nav-section-label">Marketing</div><div class="nav-list"><a class="nav-link" href="marketing-pricing.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg><span>Pricing</span></a><a class="nav-link" href="components.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg><span>Components</span></a></div>
+      <div class="nav-section-label">Auth</div><div class="nav-list"><a class="nav-link" href="auth-login.html"><span>Login</span></a><a class="nav-link" href="auth-signup.html"><span>Sign Up</span></a><a class="nav-link" href="auth-wallet.html"><span>Wallet Connect</span></a></div>
+      <div class="sidebar-card"><p>Multi-chain analytics and team seat controls are included in the Pro tier.</p><a class="btn btn-primary" href="settings-billing.html">Upgrade Plan</a></div>
+    </aside>
 
     <main class="main">
       <div class="topbar">
-        <div class="page-title">
-          <h1>Transactions</h1>
-          <p>Audit on-chain activity with filters, labels, and export.</p>
-        </div>
+        <div class="page-title"><h1>Transactions</h1><p>Full cross-chain activity log with gas cost, confirmation count, and block reference.</p></div>
         <div class="topbar-actions">
-          <label class="search">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg>
-            <input type="search" placeholder="Search nodes, wallets, prompts..." />
-          </label>
-          <button class="btn btn-secondary">Export</button>
-          <div class="avatar">AR</div>
+          <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg><input type="search" placeholder="Search by hash or address..." /></label>
+          <button class="btn btn-secondary">Export CSV</button>
+          <div class="avatar" aria-label="User avatar">AR</div>
         </div>
       </div>
-      
-      <section class="grid-2">
-        <article class="card">
-          <div class="card-header"><h2>Filter</h2></div>
-          <div class="field"><label>Chain</label><select><option>All chains</option><option>Ethereum</option><option>Solana</option></select></div>
-          <div class="field"><label>Status</label><select><option>All statuses</option><option>Confirmed</option><option>Pending</option></select></div>
-          <div class="field"><label>Min Amount (USD)</label><input type="text" value="1000" /></div>
-          <button class="btn btn-primary">Apply Filters</button>
-        </article>
-        <article class="card">
-          <div class="card-header"><h2>24h Summary</h2></div>
-          <div class="stat-label">Confirmed Transactions</div><div class="stat-value">1,284</div>
-          <div class="progress" style="margin: 16px 0;"><span style="width: 78%;"></span></div>
-          <p style="color: var(--text-secondary); margin: 0;">78% matched to treasury policy rules.</p>
-        </article>
+
+      <section class="grid-stats">
+        <article class="card hover-lift"><div class="stat-label">Transactions (24h)</div><div class="stat-value">14,882</div><div class="stat-delta up">+8.3% from yesterday</div></article>
+        <article class="card hover-lift"><div class="stat-label">Avg Gas Cost</div><div class="stat-value">$0.42</div><div class="stat-delta down">-11% after Base routing</div></article>
+        <article class="card hover-lift"><div class="stat-label">Failed Rate</div><div class="stat-value">0.8%</div><div class="stat-delta up">Within normal range</div></article>
+        <article class="card hover-lift"><div class="stat-label">Avg Confirmation</div><div class="stat-value">3.2s</div><div class="stat-delta up">All chains below threshold</div></article>
       </section>
-      <article class="card">
-        <div class="card-header"><div><h2>Latest Transactions</h2><p>Real-time feed with policy tags</p></div><button class="btn btn-secondary">Download CSV</button></div>
+
+      <article class="card hover-glow">
+        <div class="card-header">
+          <div><h2>Transaction History</h2><p>Showing last 100 entries across all connected chains</p></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-secondary">Filter</button>
+            <button class="btn btn-primary">New Transfer</button>
+          </div>
+        </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Hash</th><th>From</th><th>To</th><th>Amount</th><th>Chain</th><th>Status</th></tr></thead>
+            <thead><tr><th>Hash</th><th>From</th><th>To</th><th>Chain</th><th>Value</th><th>Gas</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td class="mono">0x9f2...11aa</td><td class="mono">Treasury</td><td class="mono">0x44...901</td><td>$42,800</td><td>Ethereum</td><td><span class="badge success">Confirmed</span></td></tr>
-              <tr><td class="mono">5kL...9Qm1</td><td class="mono">Ops</td><td class="mono">Jup...Pool</td><td>$8,120</td><td>Solana</td><td><span class="badge success">Confirmed</span></td></tr>
-              <tr><td class="mono">0x18a...77fe</td><td class="mono">Grant</td><td class="mono">0x90...221</td><td>$12,000</td><td>Arbitrum</td><td><span class="badge warning">Pending</span></td></tr>
+              <tr class="table-hover-row"><td class="mono">0x4a7b...c291</td><td class="mono">0x71C...9Fa2</td><td class="mono">0xA13...88B1</td><td>Ethereum</td><td>12.4 ETH</td><td>$2.18</td><td><span class="badge success">Confirmed</span></td></tr>
+              <tr class="table-hover-row"><td class="mono">0xf891...a044</td><td class="mono">0xA13...88B1</td><td class="mono">Coinbase</td><td>Base</td><td>$4,200</td><td>$0.01</td><td><span class="badge success">Confirmed</span></td></tr>
+              <tr class="table-hover-row"><td class="mono">0x2c3e...8f77</td><td class="mono">9xQe...kLm4</td><td class="mono">Vault</td><td>Solana</td><td>820 SOL</td><td>$0.00</td><td><span class="badge info">Pending</span></td></tr>
+              <tr class="table-hover-row"><td class="mono">0x9d1a...3b52</td><td class="mono">0x55D...C901</td><td class="mono">0x71C...9Fa2</td><td>Arbitrum</td><td>32.0 ETH</td><td>$0.09</td><td><span class="badge warning">1 Confirm</span></td></tr>
+              <tr class="table-hover-row"><td class="mono">0x7e82...0c18</td><td class="mono">0xA13...88B1</td><td class="mono">0x55D...C901</td><td>Base</td><td>$1,850</td><td>$0.01</td><td><span class="badge success">Confirmed</span></td></tr>
+              <tr class="table-hover-row"><td class="mono">0xb441...d965</td><td class="mono">0x71C...9Fa2</td><td class="mono">Burn</td><td>Ethereum</td><td>0.01 ETH</td><td>$1.44</td><td><span class="badge danger">Failed</span></td></tr>
             </tbody>
           </table>
         </div>
       </article>
-        
     </main>
   </div>
   <script src="../assets/js/animations.js"></script>
 </body>
 </html>
-
