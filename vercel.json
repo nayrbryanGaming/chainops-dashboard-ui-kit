@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/preview/index.html",
+      "permanent": false
+    }
+  ]
+}
