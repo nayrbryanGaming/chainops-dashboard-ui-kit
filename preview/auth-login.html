@@ -1,42 +1,198 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome back — ChainOps UI Kit</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <title>Sign In — ChainOps UI Kit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/chainops.css" />
   <link rel="stylesheet" href="../assets/css/animations.css" />
+  <style>
+    :root { --font: 'Space Grotesk', system-ui, sans-serif; --mono: 'JetBrains Mono', monospace; }
+    body { font-family: var(--font); display: grid; place-items: center; min-height: 100vh; background: var(--bg-base, #070b14); }
+
+    .auth-wrap {
+      display: grid; grid-template-columns: 1fr 1fr;
+      width: min(920px, 96vw); border-radius: 24px; overflow: hidden;
+      border: 1px solid rgba(148,163,184,0.1);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+      animation: scaleIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    /* LEFT — visual panel */
+    .auth-panel {
+      background: linear-gradient(160deg, #0c1628 0%, #060e1e 100%);
+      padding: 52px 44px; display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+    }
+    .auth-panel::before {
+      content: ''; position: absolute; width: 480px; height: 480px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(34,211,238,0.1) 0%, transparent 65%);
+      top: -120px; left: -80px; pointer-events: none;
+      animation: breathe 7s ease-in-out infinite;
+    }
+    .auth-panel::after {
+      content: ''; position: absolute; width: 360px; height: 360px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(167,139,250,0.09) 0%, transparent 65%);
+      bottom: -100px; right: -60px; pointer-events: none;
+      animation: breathe 9s ease-in-out infinite 2s;
+    }
+    .ap-logo {
+      display: flex; align-items: center; gap: 10px; margin-bottom: auto;
+      font-size: 0.9rem; font-weight: 600; color: rgba(237,242,252,0.9);
+      position: relative; z-index: 2;
+    }
+    .ap-logo-mark {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: linear-gradient(135deg, #22d3ee, #818cf8, #c084fc);
+      display: grid; place-items: center;
+      box-shadow: 0 4px 18px rgba(34,211,238,0.3);
+    }
+    .ap-logo-mark svg { width: 16px; height: 16px; color: #04101a; }
+    .ap-content { position: relative; z-index: 2; margin-top: auto; }
+    .ap-title {
+      font-size: 1.9rem; font-weight: 700; letter-spacing: -0.04em;
+      line-height: 1.18; margin-bottom: 14px; color: #edf2fc;
+    }
+    .ap-title span {
+      background: linear-gradient(135deg, #22d3ee, #818cf8, #c084fc);
+      background-size: 200% 200%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 5s ease infinite;
+    }
+    .ap-desc { font-size: 0.88rem; color: rgba(122,148,184,0.9); line-height: 1.7; margin-bottom: 24px; max-width: 32ch; }
+    .ap-stats { display: flex; gap: 24px; }
+    .ap-stat-val { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.04em; color: #edf2fc; }
+    .ap-stat-lbl { font-size: 0.68rem; color: rgba(122,148,184,0.7); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+
+    /* RIGHT — form */
+    .auth-form-wrap {
+      background: var(--bg-panel, rgba(10,17,33,0.95));
+      padding: 52px 44px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .auth-form-wrap h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 4px; }
+    .auth-form-wrap p  { font-size: 0.85rem; color: var(--text-secondary, #7a94b8); margin-bottom: 28px; line-height: 1.6; }
+
+    .auth-social { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 22px; }
+    .social-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 10px; border-radius: 10px; border: 1px solid rgba(148,163,184,0.14);
+      background: rgba(255,255,255,0.025); color: rgba(237,242,252,0.8);
+      font-family: var(--font); font-size: 0.82rem; font-weight: 500; cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .social-btn:hover { background: rgba(255,255,255,0.06); border-color: rgba(148,163,184,0.28); transform: translateY(-1px); }
+    .social-btn svg { width: 15px; height: 15px; }
+
+    .auth-divider { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: rgba(148,163,184,0.1); }
+    .auth-divider span { font-size: 0.72rem; color: rgba(122,148,184,0.5); white-space: nowrap; }
+
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 0.78rem; font-weight: 600; color: rgba(237,242,252,0.7); margin-bottom: 6px; letter-spacing: 0.02em; }
+    .form-input {
+      width: 100%; padding: 11px 14px; border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.12);
+      background: rgba(255,255,255,0.04); color: #edf2fc;
+      font-family: var(--font); font-size: 0.88rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: rgba(34,211,238,0.45);
+      background: rgba(34,211,238,0.04);
+      box-shadow: 0 0 0 3px rgba(34,211,238,0.08);
+    }
+    .form-input::placeholder { color: rgba(122,148,184,0.45); }
+
+    .form-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .form-check { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; color: rgba(122,148,184,0.7); cursor: pointer; }
+    .form-check input { accent-color: #22d3ee; }
+    .form-link { font-size: 0.8rem; color: #22d3ee; text-decoration: none; transition: opacity 0.15s; }
+    .form-link:hover { opacity: 0.75; }
+
+    .auth-submit {
+      width: 100%; padding: 12px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #22d3ee, #818cf8, #c084fc);
+      color: #04101a; font-family: var(--font); font-size: 0.92rem; font-weight: 700;
+      cursor: pointer; letter-spacing: -0.01em;
+      box-shadow: 0 6px 24px rgba(34,211,238,0.28);
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+    }
+    .auth-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(34,211,238,0.38); }
+    .auth-submit:active { transform: scale(0.97); }
+
+    .auth-footer-link { text-align: center; margin-top: 18px; font-size: 0.82rem; color: rgba(122,148,184,0.6); }
+    .auth-footer-link a { color: #22d3ee; text-decoration: none; font-weight: 600; }
+
+    @media (max-width: 680px) {
+      .auth-wrap { grid-template-columns: 1fr; }
+      .auth-panel { display: none; }
+      .auth-form-wrap { padding: 36px 28px; }
+    }
+  </style>
 </head>
 <body>
-  <div class="auth-layout">
-    <section class="auth-hero">
-      <div class="brand">
-        <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg></div>
-        <div class="brand-copy"><strong>ChainOps</strong><span>Ship Web3 + AI products faster</span></div>
+  <div class="auth-wrap">
+    <div class="auth-panel">
+      <div class="ap-logo">
+        <div class="ap-logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg></div>
+        ChainOps
       </div>
-      <div>
-        <h1>Operate chains, models, and revenue in one premium dashboard.</h1>
-        <p>Investor-ready UI for SaaS founders, agencies, and indie hackers building in Web3 and AI.</p>
+      <div class="ap-content">
+        <h2 class="ap-title">Your Web3 + AI<br>ops panel, <span>ready.</span></h2>
+        <p class="ap-desc">One dashboard for treasury wallets, cross-chain transactions, AI model costs, and team access — all in a single view.</p>
+        <div class="ap-stats">
+          <div><div class="ap-stat-val">13</div><div class="ap-stat-lbl">Screens</div></div>
+          <div><div class="ap-stat-val">4</div><div class="ap-stat-lbl">AI Models</div></div>
+          <div><div class="ap-stat-val">99.9%</div><div class="ap-stat-lbl">Uptime</div></div>
+        </div>
       </div>
-      <p style="color: var(--text-muted); font-size: 0.85rem;">© ChainOps UI Kit • Commercial license included</p>
-    </section>
-    <section class="auth-panel">
-      <div class="auth-card">
-        <h2>Welcome back</h2>
-        <p class="subtitle">Sign in to your ChainOps workspace.</p>
-        
-        <div class="field"><label>Email</label><input type="email" placeholder="you@company.com" /></div>
-        <div class="field"><label>Password</label><input type="password" placeholder="••••••••" /></div>
-        <button class="btn btn-primary" style="width:100%;">Sign In</button>
-        <div class="divider">or continue with</div>
-        <button class="btn btn-secondary" style="width:100%;">Connect Wallet</button>
-        <p style="margin-top:18px;color:var(--text-secondary);font-size:0.9rem;">No account? <a href="auth-signup.html" style="color:var(--accent-cyan);">Create one</a></p>
-        
+    </div>
+
+    <div class="auth-form-wrap">
+      <h1>Sign in to your account</h1>
+      <p>Enter your credentials below or use a connected wallet to authenticate.</p>
+
+      <div class="auth-social">
+        <button class="social-btn" type="button" aria-label="Continue with Google">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22.5 12.2c0-.8-.1-1.5-.2-2.2H12v4.2h5.9c-.3 1.3-1 2.4-2 3.1v2.6h3.3c1.9-1.8 3-4.4 3-7.7z" fill="#4285F4"/><path d="M12 23c3 0 5.4-1 7.2-2.7l-3.3-2.6c-.9.6-2.1 1-3.9 1-3 0-5.5-2-6.4-4.8H2.2v2.7C4 20.4 7.7 23 12 23z" fill="#34A853"/><path d="M5.6 13.9c-.2-.6-.4-1.3-.4-1.9s.1-1.3.4-1.9V7.4H2.2C1.4 8.9 1 10.4 1 12s.4 3.1 1.2 4.6l3.4-2.7z" fill="#FBBC05"/><path d="M12 5.4c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.5 2 15 1 12 1 7.7 1 4 3.6 2.2 7.4l3.4 2.7C6.5 7.4 9 5.4 12 5.4z" fill="#EA4335"/></svg>
+          Google
+        </button>
+        <button class="social-btn" type="button" aria-label="Continue with GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+          GitHub
+        </button>
       </div>
-    </section>
+
+      <div class="auth-divider"><span>or sign in with email</span></div>
+
+      <form>
+        <div class="form-group">
+          <label class="form-label" for="email">Email address</label>
+          <input id="email" class="form-input" type="email" placeholder="you@company.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input id="password" class="form-input" type="password" placeholder="••••••••••" autocomplete="current-password" />
+        </div>
+        <div class="form-row">
+          <label class="form-check"><input type="checkbox" /> Keep me signed in</label>
+          <a href="#" class="form-link">Reset password</a>
+        </div>
+        <button type="submit" class="auth-submit">Sign In</button>
+      </form>
+
+      <div class="auth-footer-link">
+        No account yet? <a href="auth-signup.html">Create one free</a>
+        &nbsp;&middot;&nbsp;
+        <a href="auth-wallet.html" class="form-link">Use wallet instead</a>
+      </div>
+    </div>
   </div>
   <script src="../assets/js/animations.js"></script>
 </body>
 </html>
-

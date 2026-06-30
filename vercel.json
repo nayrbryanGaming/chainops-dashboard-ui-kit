@@ -2,16 +2,30 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/preview", "destination": "/preview/index.html" },
-    { "source": "/(.*)", "destination": "/$1" }
+    { "source": "/",                     "destination": "/index.html" },
+    { "source": "/preview",              "destination": "/preview/index.html" },
+    { "source": "/dashboard",            "destination": "/preview/dashboard-overview.html" },
+    { "source": "/dashboard-overview",   "destination": "/preview/dashboard-overview.html" },
+    { "source": "/wallets",              "destination": "/preview/web3-wallets.html" },
+    { "source": "/web3-wallets",         "destination": "/preview/web3-wallets.html" },
+    { "source": "/transactions",         "destination": "/preview/web3-transactions.html" },
+    { "source": "/web3-transactions",    "destination": "/preview/web3-transactions.html" },
+    { "source": "/ai-prompts",           "destination": "/preview/ai-prompts.html" },
+    { "source": "/ai-usage",             "destination": "/preview/ai-usage.html" },
+    { "source": "/settings-profile",     "destination": "/preview/settings-profile.html" },
+    { "source": "/settings-billing",     "destination": "/preview/settings-billing.html" },
+    { "source": "/settings-team",        "destination": "/preview/settings-team.html" },
+    { "source": "/marketing-pricing",    "destination": "/preview/marketing-pricing.html" },
+    { "source": "/components",           "destination": "/preview/components.html" },
+    { "source": "/auth-login",           "destination": "/preview/auth-login.html" },
+    { "source": "/auth-signup",          "destination": "/preview/auth-signup.html" },
+    { "source": "/auth-wallet",          "destination": "/preview/auth-wallet.html" }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" }
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
       ]
     }
   ]
