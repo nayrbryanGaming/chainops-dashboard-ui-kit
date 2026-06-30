@@ -3,22 +3,381 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChainOps UI Kit Preview Hub</title>
+  <title>Screen Gallery — ChainOps UI Kit</title>
+  <meta name="description" content="Browse all 13 screens included in the ChainOps UI Kit — dashboard, Web3, AI Ops, auth, and settings." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/chainops.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <style>
+    :root {
+      --font: 'Space Grotesk', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); }
+
+    .hub-header {
+      padding: 56px 40px 40px;
+      border-bottom: 1px solid var(--border-dim, rgba(148,163,184,0.08));
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+      flex-wrap: wrap;
+    }
+    .hub-header h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 4px; }
+    .hub-header p  { font-size: 0.88rem; color: var(--text-secondary, #7a94b8); line-height: 1.6; max-width: 42ch; }
+    .hub-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+    .hub-filter {
+      padding: 5px 14px; border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.14); background: none;
+      font-family: var(--font); font-size: 0.8rem; font-weight: 500; color: var(--text-secondary, #7a94b8);
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    .hub-filter:hover  { border-color: rgba(148,163,184,0.3); color: var(--text-primary, #edf2fc); }
+    .hub-filter.active {
+      background: linear-gradient(135deg, #22d3ee, #818cf8, #c084fc);
+      border-color: transparent; color: #040d16; font-weight: 700;
+    }
+
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px; padding: 32px 40px 56px;
+    }
+    .hub-card {
+      border: 1px solid rgba(148,163,184,0.08);
+      border-radius: 16px; overflow: hidden;
+      background: var(--bg-panel, rgba(10,17,33,0.8));
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                  border-color 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer; text-decoration: none; color: inherit; display: block;
+    }
+    .hub-card:hover {
+      transform: translateY(-5px) scale(1.01);
+      border-color: rgba(34,211,238,0.28);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(34,211,238,0.06);
+    }
+    .hub-thumb {
+      height: 168px; overflow: hidden; position: relative;
+      background: var(--bg-base, #060a12);
+    }
+    .hub-thumb::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 40%, var(--bg-panel, rgba(10,17,33,0.8)) 100%);
+    }
+    .thumb-bar {
+      display: flex; gap: 5px; padding: 10px 12px;
+      border-bottom: 1px solid rgba(148,163,184,0.06);
+    }
+    .tb-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .thumb-content { padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+    .tc-row { display: flex; gap: 7px; }
+    .tc-block { border-radius: 5px; background: rgba(255,255,255,0.05); }
+    .tc-stat  { height: 28px; flex: 1; border-radius: 7px; background: rgba(255,255,255,0.04); border: 1px solid rgba(148,163,184,0.07); }
+    .tc-chart {
+      height: 36px; border-radius: 6px; overflow: hidden; position: relative;
+      background: rgba(34,211,238,0.04);
+    }
+    .tc-chart::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 28px;
+      background: linear-gradient(90deg, rgba(34,211,238,0.4), rgba(167,139,250,0.3));
+      clip-path: polygon(0 70%, 20% 50%, 40% 60%, 60% 30%, 80% 42%, 100% 18%, 100% 100%, 0 100%);
+    }
+    .tc-line { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.05); }
+
+    .hub-info { padding: 14px 16px 16px; }
+    .hub-tag {
+      font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent-cyan, #22d3ee);
+      margin-bottom: 4px;
+    }
+    .hub-name { font-size: 0.95rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .hub-desc { font-size: 0.8rem; color: var(--text-secondary, #7a94b8); line-height: 1.5; }
+    .hub-open {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.76rem; font-weight: 600; color: var(--accent-cyan, #22d3ee);
+      margin-top: 10px; opacity: 0; transition: opacity 0.2s ease;
+    }
+    .hub-card:hover .hub-open { opacity: 1; }
+    .hub-open svg { width: 11px; height: 11px; }
+
+    @media (max-width: 640px) {
+      .hub-header, .hub-grid { padding-left: 20px; padding-right: 20px; }
+      .hub-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <div class="preview-hub">
-    <header>
-      <div class="brand" style="justify-content:center; margin-bottom: 18px;">
-        <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg></div>
-        <div class="brand-copy"><strong>ChainOps UI Kit</strong><span>40+ screen system • Web3 + AI SaaS</span></div>
-      </div>
-      <h1>Premium Dashboard Preview Hub</h1>
-      <p>Open any screen below. Every layout is production-ready HTML/CSS with a shared design system, perfect for Gumroad buyers, pitch decks, and rapid product prototyping.</p>
-    </header>
-    <section class="screen-grid">
-      <a class="screen-card" href="dashboard-overview.html"><h3>Overview Dashboard</h3><p>Operational KPI hub for Web3 + AI teams.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="web3-wallets.html"><h3>Wallet Management</h3><p>Treasury and signer monitoring.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="web3-transactions.html"><h3>Transaction Feed</h3><p>Audit-ready on-chain activity table.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="ai-prompts.html"><h3>Prompt Logs</h3><p>AI request audit trail.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="ai-usage.html"><h3>Model Usage</h3><p>Spend and quota analytics.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="settings-profile.html"><h3>Profile Settings</h3><p>Identity and security controls.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="settings-billing.html"><h3>Billing</h3><p>Subscription and invoice management.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="settings-team.html"><h3>Team Access</h3><p>Roles and invitations.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="marketing-pricing.html"><h3>Pricing Page</h3><p>Marketing-ready SaaS pricing layout.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="components.html"><h3>Component Library</h3><p>Buttons, badges, forms, stats.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="auth-login.html"><h3>Login</h3><p>Auth screen with split hero layout.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="auth-signup.html"><h3>Sign Up</h3><p>Registration flow.</p><span class="btn btn-secondary">Open Screen</span></a><a class="screen-card" href="auth-wallet.html"><h3>Wallet Connect</h3><p>Web3 wallet picker screen.</p><span class="btn btn-secondary">Open Screen</span></a>
-    </section>
+  <div class="hub-header">
+    <div>
+      <h1>Screen Gallery</h1>
+      <p>Browse all 13 screens from the ChainOps UI Kit. Each page loads live in the browser — no build step required.</p>
+    </div>
+    <div class="hub-nav" role="group" aria-label="Filter by category">
+      <button class="hub-filter active" onclick="filterHub(event,'all')">All Screens</button>
+      <button class="hub-filter" onclick="filterHub(event,'dashboard')">Dashboard</button>
+      <button class="hub-filter" onclick="filterHub(event,'web3')">Web3</button>
+      <button class="hub-filter" onclick="filterHub(event,'ai')">AI Ops</button>
+      <button class="hub-filter" onclick="filterHub(event,'settings')">Settings</button>
+      <button class="hub-filter" onclick="filterHub(event,'auth')">Auth</button>
+      <button class="hub-filter" onclick="filterHub(event,'marketing')">Marketing</button>
+    </div>
   </div>
+
+  <div class="hub-grid" id="hub-grid">
+
+    <a href="dashboard-overview.html" class="hub-card anim-fade-up anim-both" data-cat="dashboard" style="animation-delay:0ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-row"><div class="tc-stat"></div><div class="tc-stat"></div><div class="tc-stat"></div><div class="tc-stat"></div></div>
+          <div class="tc-chart"></div>
+          <div class="tc-line" style="width:90%"></div>
+          <div class="tc-line" style="width:70%"></div>
+          <div class="tc-line" style="width:80%"></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Dashboard</div>
+        <div class="hub-name">Overview</div>
+        <div class="hub-desc">KPIs, throughput chart, alerts table, and live activity feed.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="web3-wallets.html" class="hub-card anim-fade-up anim-both" data-cat="web3" style="animation-delay:55ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-row"><div class="tc-stat"></div><div class="tc-stat"></div><div class="tc-stat"></div></div>
+          <div class="tc-block" style="height:40px;border:1px solid rgba(167,139,250,0.18);background:rgba(167,139,250,0.06)"></div>
+          <div class="tc-line"></div><div class="tc-line" style="width:75%"></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Web3</div>
+        <div class="hub-name">Wallets</div>
+        <div class="hub-desc">Treasury wallet list with address, chain, balance, and signer status columns.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="web3-transactions.html" class="hub-card anim-fade-up anim-both" data-cat="web3" style="animation-delay:110ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-row"><div class="tc-stat"></div><div class="tc-stat"></div><div class="tc-stat"></div></div>
+          <div class="tc-line"></div><div class="tc-line" style="width:85%"></div>
+          <div class="tc-line" style="width:65%"></div><div class="tc-line" style="width:90%"></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Web3</div>
+        <div class="hub-name">Transactions</div>
+        <div class="hub-desc">Cross-chain transaction history with hash, gas cost, block, and confirmation count.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="ai-prompts.html" class="hub-card anim-fade-up anim-both" data-cat="ai" style="animation-delay:165ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-stat" style="height:22px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.14)"></div>
+          <div class="tc-line"></div><div class="tc-line" style="width:78%"></div>
+          <div class="tc-line" style="width:92%"></div><div class="tc-line" style="width:60%"></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">AI Ops</div>
+        <div class="hub-name">Prompt Logs</div>
+        <div class="hub-desc">Full AI request audit trail with latency, token count, model route, and status per call.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="ai-usage.html" class="hub-card anim-fade-up anim-both" data-cat="ai" style="animation-delay:220ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-row"><div class="tc-stat"></div><div class="tc-stat"></div></div>
+          <div class="tc-chart" style="background:rgba(167,139,250,0.04)"></div>
+          <div class="tc-line"></div><div class="tc-line" style="width:70%"></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">AI Ops</div>
+        <div class="hub-name">Model Usage</div>
+        <div class="hub-desc">Token consumption and cost breakdown across every AI model in your stack.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="settings-profile.html" class="hub-card anim-fade-up anim-both" data-cat="settings" style="animation-delay:275ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div style="display:flex;gap:10px;align-items:center"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22d3ee,#a78bfa)"></div><div style="flex:1"><div class="tc-line" style="width:50%;margin-bottom:5px"></div><div class="tc-line" style="width:70%"></div></div></div>
+          <div class="tc-line"></div><div class="tc-line" style="width:80%"></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Settings</div>
+        <div class="hub-name">Profile</div>
+        <div class="hub-desc">Account details, notification toggles, connected wallets, and API key management.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="settings-billing.html" class="hub-card anim-fade-up anim-both" data-cat="settings" style="animation-delay:330ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-row"><div class="tc-stat" style="border-color:rgba(34,211,238,0.2)"></div><div class="tc-stat"></div></div>
+          <div class="tc-line"></div><div class="tc-line" style="width:75%"></div><div class="tc-line" style="width:60%"></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Settings</div>
+        <div class="hub-name">Billing</div>
+        <div class="hub-desc">Current plan, payment method on file, invoice history, and usage quota display.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="settings-team.html" class="hub-card anim-fade-up anim-both" data-cat="settings" style="animation-delay:385ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-row" style="align-items:center;gap:6px">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(34,211,238,0.2)"></div>
+            <div class="tc-line" style="flex:1"></div>
+            <div class="tc-block" style="width:44px;height:14px;border-radius:999px;background:rgba(52,211,153,0.2)"></div>
+          </div>
+          <div class="tc-row" style="align-items:center;gap:6px">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(167,139,250,0.2)"></div>
+            <div class="tc-line" style="flex:1"></div>
+            <div class="tc-block" style="width:44px;height:14px;border-radius:999px;background:rgba(34,211,238,0.18)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Settings</div>
+        <div class="hub-name">Team</div>
+        <div class="hub-desc">Member list with role assignments, pending invites, and wallet-based access control.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="marketing-pricing.html" class="hub-card anim-fade-up anim-both" data-cat="marketing" style="animation-delay:440ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-row" style="align-items:flex-start;gap:6px">
+            <div class="tc-stat" style="height:54px"></div>
+            <div class="tc-stat" style="height:70px;border-color:rgba(34,211,238,0.28);background:rgba(34,211,238,0.05)"></div>
+            <div class="tc-stat" style="height:54px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Marketing</div>
+        <div class="hub-name">Pricing Page</div>
+        <div class="hub-desc">Three-tier SaaS pricing layout with feature lists, highlighted best-value card, and CTA buttons.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="components.html" class="hub-card anim-fade-up anim-both" data-cat="marketing" style="animation-delay:495ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-row" style="gap:5px">
+            <div style="height:14px;border-radius:999px;background:linear-gradient(135deg,#22d3ee,#a78bfa);width:40px;opacity:0.85"></div>
+            <div style="height:14px;border-radius:999px;border:1px solid rgba(148,163,184,0.18);width:36px"></div>
+            <div style="height:14px;border-radius:6px;background:rgba(52,211,153,0.18);width:30px"></div>
+          </div>
+          <div class="tc-row"><div class="tc-stat" style="height:22px"></div><div class="tc-stat" style="height:22px"></div></div>
+          <div class="tc-line"></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">System</div>
+        <div class="hub-name">Components</div>
+        <div class="hub-desc">Reference page for all reusable pieces: buttons, badges, forms, stat cards, tables, and progress bars.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="auth-login.html" class="hub-card anim-fade-up anim-both" data-cat="auth" style="animation-delay:550ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center">
+          <div style="background:rgba(34,211,238,0.04);border-radius:8px;height:60px;padding:6px"><div class="tc-line" style="width:60%;margin-bottom:5px"></div><div class="tc-line"></div></div>
+          <div style="display:flex;flex-direction:column;gap:5px"><div class="tc-stat" style="height:15px"></div><div class="tc-stat" style="height:15px"></div><div style="height:13px;border-radius:6px;background:linear-gradient(135deg,#22d3ee,#a78bfa);opacity:0.75"></div></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Auth</div>
+        <div class="hub-name">Login</div>
+        <div class="hub-desc">Split-panel login screen with social auth buttons, 2FA indicator, and forgot-password flow.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="auth-signup.html" class="hub-card anim-fade-up anim-both" data-cat="auth" style="animation-delay:605ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div class="tc-stat" style="height:15px;width:50%;margin-bottom:3px"></div>
+          <div class="tc-stat" style="height:15px"></div>
+          <div class="tc-stat" style="height:15px"></div>
+          <div style="height:14px;border-radius:6px;background:linear-gradient(135deg,#22d3ee,#a78bfa);opacity:0.75"></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Auth</div>
+        <div class="hub-name">Sign Up</div>
+        <div class="hub-desc">Account creation form with email, password strength indicator, and terms acceptance checkbox.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="auth-wallet.html" class="hub-card anim-fade-up anim-both" data-cat="auth" style="animation-delay:660ms">
+      <div class="hub-thumb">
+        <div class="thumb-bar"><div class="tb-dot" style="background:#ff5f57"></div><div class="tb-dot" style="background:#febc2e"></div><div class="tb-dot" style="background:#28c840"></div></div>
+        <div class="thumb-content">
+          <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(34,211,238,0.2),rgba(167,139,250,0.2));border:1px solid rgba(34,211,238,0.2);margin-bottom:8px"></div>
+          <div class="tc-row"><div style="flex:1;height:24px;border-radius:7px;border:1px solid rgba(148,163,184,0.12);background:rgba(255,255,255,0.03)"></div></div>
+          <div class="tc-row"><div style="flex:1;height:24px;border-radius:7px;border:1px solid rgba(148,163,184,0.12);background:rgba(255,255,255,0.03)"></div></div>
+        </div>
+      </div>
+      <div class="hub-info">
+        <div class="hub-tag">Auth</div>
+        <div class="hub-name">Wallet Connect</div>
+        <div class="hub-desc">Web3 onboarding screen — connect MetaMask, WalletConnect, or Coinbase Wallet in one step.</div>
+        <div class="hub-open">Open screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+  </div>
+
+  <script>
+  function filterHub(e, cat) {
+    /* toggle active button */
+    document.querySelectorAll('.hub-filter').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+
+    /* filter cards with fade */
+    document.querySelectorAll('.hub-card').forEach(card => {
+      const match = cat === 'all' || card.dataset.cat === cat;
+      if (match) {
+        card.style.display = '';
+        card.style.animation = 'scaleIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+  </script>
+  <script src="../assets/js/animations.js"></script>
 </body>
 </html>
