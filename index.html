@@ -106,22 +106,23 @@
       <strong style="color:white;font-size:1.1rem;">ChainOps</strong>
     </div>
     <nav class="nav-links">
-      <a href="#features">Features</a>
-      <a href="preview/dashboard-overview">Preview</a>
-      <a href="#pricing">Pricing</a>
+      <a href="#features">Fitur Utama</a>
+      <a href="preview/dashboard-overview.html">Pratinjau</a>
+      <a href="#pricing">Harga</a>
     </nav>
   </header>
 
   <main>
+    <canvas id="particle-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none;"></canvas>
     <section class="hero">
-      <div class="badge info" style="margin-bottom: 24px;">v1.0 is live</div>
-      <h1 class="anim-fade-up">Ship your dashboard this week.</h1>
+      <div class="badge info" style="margin-bottom: 24px;">v1.0 telah rilis</div>
+      <h1 class="anim-fade-up">Luncurkan Dasbor Anda Minggu Ini.</h1>
       <p class="anim-fade-up" style="animation-delay: 100ms;">
-        Production HTML screens with a shared CSS system. Built for Web3 panels and AI tools. Drop straight into React, Vue, or plain HTML.
+        Komponen HTML siap produksi dengan sistem CSS terpadu. Sangat cocok untuk panel Web3 dan aplikasi kecerdasan buatan. Pasang langsung ke React, Vue, ataupun HTML standar tanpa pusing.
       </p>
       <div class="hero-actions anim-fade-up" style="animation-delay: 200ms;">
-        <a href="preview/dashboard-overview" class="btn btn-primary" style="padding: 14px 28px; font-size: 1.1rem;">Browse 13 Screens</a>
-        <a href="#pricing" class="btn btn-secondary" style="padding: 14px 28px; font-size: 1.1rem;">Get the Kit</a>
+        <a href="preview/dashboard-overview.html" class="btn btn-primary" style="padding: 14px 28px; font-size: 1.1rem;">Lihat 13 Halaman</a>
+        <a href="#pricing" class="btn btn-secondary" style="padding: 14px 28px; font-size: 1.1rem;">Dapatkan Sekarang</a>
       </div>
     </section>
 
@@ -130,76 +131,136 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="color:var(--accent-cyan); margin-bottom:16px;">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
         </svg>
-        <h3>Ready from day one</h3>
-        <p style="color:var(--text-secondary); margin-top:8px;">Every screen is completely built. Copy the HTML sections into whatever framework you use. The shared stylesheet handles everything else.</p>
+        <h3>Siap Pakai dari Awal</h3>
+        <p style="color:var(--text-secondary); margin-top:8px;">Setiap halaman sudah terangkai dengan sempurna. Cukup salin potongan HTML ke kerangka kerja pilihan Anda. Gaya tampilannya akan menyesuaikan secara otomatis.</p>
       </article>
       
       <article class="card hover-tilt">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="color:var(--accent-purple); margin-bottom:16px;">
           <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
         </svg>
-        <h3>CSS Design System</h3>
-        <p style="color:var(--text-secondary); margin-top:8px;">One stylesheet drives colors, spacing, and layout. Change the root variables and the entire product updates. No hunting for inline styles.</p>
+        <h3>Sistem Desain CSS</h3>
+        <p style="color:var(--text-secondary); margin-top:8px;">Satu lembar gaya mengendalikan seluruh warna, jarak, dan tata letak. Cukup ubah variabel utamanya dan seluruh aplikasi akan mengikuti. Tidak perlu mencari gaya satu per satu.</p>
       </article>
 
       <article class="card hover-tilt">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="color:var(--accent-emerald); margin-bottom:16px;">
           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
         </svg>
-        <h3>No Build Config</h3>
-        <p style="color:var(--text-secondary); margin-top:8px;">Plain HTML and CSS. You do not need a bundler or node modules to open these files. Double click the file, open in browser, and it works.</p>
+        <h3>Tanpa Konfigurasi Rumit</h3>
+        <p style="color:var(--text-secondary); margin-top:8px;">Murni menggunakan HTML dan CSS biasa. Anda tidak membutuhkan pengaturan khusus atau modul tambahan untuk membukanya. Cukup klik dua kali, dan langsung berjalan di peramban.</p>
       </article>
     </section>
 
     <section id="pricing" class="pricing-section">
-      <h2 style="font-size: 2.5rem; margin-bottom: 16px;">Pay once, use on unlimited projects.</h2>
-      <p style="color:var(--text-secondary); max-width: 600px; margin: 0 auto 60px;">No subscriptions. Pay once and use it across every personal and client project you build.</p>
+      <h2 style="font-size: 2.5rem; margin-bottom: 16px;">Bayar sekali, gunakan sepuasnya.</h2>
+      <p style="color:var(--text-secondary); max-width: 600px; margin: 0 auto 60px;">Tanpa biaya berlangganan bulanan. Bayar sekali di awal dan gunakan untuk seluruh proyek pribadi maupun klien Anda tanpa batas.</p>
       
       <div class="grid-3">
         <article class="card pricing-card hover-glow">
-          <h3 style="font-size:1.5rem; margin-bottom:8px;">HTML Kit</h3>
+          <h3 style="font-size:1.5rem; margin-bottom:8px;">Paket HTML</h3>
           <div style="font-size:2.5rem; font-weight:700; margin-bottom:24px;">$39</div>
           <ul style="text-align:left; color:var(--text-secondary); line-height:2; margin-bottom:32px; padding-left:20px;">
-            <li>13 HTML screens</li>
-            <li>CSS design system</li>
-            <li>Unlimited projects</li>
-            <li>Lifetime updates</li>
+            <li>13 Halaman HTML</li>
+            <li>Sistem desain CSS</li>
+            <li>Proyek tanpa batas</li>
+            <li>Pembaruan gratis selamanya</li>
           </ul>
-          <a href="#" class="btn btn-secondary" style="width:100%">Buy HTML Kit</a>
+          <a href="#" class="btn btn-secondary" style="width:100%">Beli Paket HTML</a>
         </article>
 
         <article class="card pricing-card hover-glow" style="border-color: var(--accent-cyan);">
-          <div class="badge info" style="position:absolute; top:-12px; right:24px;">Most Popular</div>
+          <div class="badge info" style="position:absolute; top:-12px; right:24px;">Paling Laris</div>
           <h3 style="font-size:1.5rem; margin-bottom:8px;">HTML + Figma</h3>
           <div style="font-size:2.5rem; font-weight:700; margin-bottom:24px;">$59</div>
           <ul style="text-align:left; color:var(--text-secondary); line-height:2; margin-bottom:32px; padding-left:20px;">
-            <li>Everything in HTML</li>
-            <li>Figma UI Kit</li>
-            <li>Tokens sync guide</li>
-            <li>Priority support</li>
+            <li>Semua fitur Paket HTML</li>
+            <li>Aset desain Figma</li>
+            <li>Panduan sinkronisasi token</li>
+            <li>Dukungan prioritas</li>
           </ul>
-          <a href="#" class="btn btn-primary" style="width:100%">Buy HTML + Figma</a>
+          <a href="#" class="btn btn-primary" style="width:100%">Beli HTML + Figma</a>
         </article>
 
         <article class="card pricing-card hover-glow">
-          <h3 style="font-size:1.5rem; margin-bottom:8px;">Agency</h3>
+          <h3 style="font-size:1.5rem; margin-bottom:8px;">Agensi</h3>
           <div style="font-size:2.5rem; font-weight:700; margin-bottom:24px;">$79</div>
           <ul style="text-align:left; color:var(--text-secondary); line-height:2; margin-bottom:32px; padding-left:20px;">
-            <li>Everything in Pro</li>
-            <li>Extended resale rights</li>
-            <li>White-label delivery</li>
-            <li>Onboarding call</li>
+            <li>Semua fitur Paket Pro</li>
+            <li>Hak jual ulang diperluas</li>
+            <li>Label putih (White-label)</li>
+            <li>Sesi panduan langsung</li>
           </ul>
-          <a href="#" class="btn btn-secondary" style="width:100%">Buy Agency</a>
+          <a href="#" class="btn btn-secondary" style="width:100%">Beli Paket Agensi</a>
         </article>
       </div>
     </section>
 
     <footer style="text-align:center; padding: 60px 24px; color: var(--text-secondary); border-top: 1px solid var(--border-dim); margin-top: 40px;">
-      <p>&copy; 2026 ChainOps UI Kit. Plain HTML and CSS.</p>
+      <p>&copy; 2026 UI Kit ChainOps. Murni HTML dan CSS.</p>
     </footer>
   </main>
 
   <script src="assets/js/animations.js?v=1782807464685"></script>
+  <script>
+    // Particle Background System (Silicon Valley Standard)
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, particles;
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.size = Math.random() * 2 + 0.5;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+      draw() {
+        ctx.fillStyle = 'rgba(34, 211, 238, 0.4)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    particles = Array.from({ length: 160 }, () => new Particle());
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+        for (let j = i; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(34, 211, 238, ${0.15 - dist / 1000})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
 </body>
 </html>
